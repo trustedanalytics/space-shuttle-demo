@@ -1,0 +1,9 @@
+---
+applications:
+- name: space-shuttle
+  memory: 512M
+  host: space-shuttle 
+  path: target/space-shuttle-demo-0.4.0.jar
+  services:
+    - zookeeper
+    - space-shuttle-db

@@ -6,14 +6,14 @@ services:
   store:
     baseUrl: http://${vcap.services.space-shuttle-db.credentials.hostname:localhost}
     apiPort: ${vcap.services.space-shuttle-db.credentials.ports.8086/tcp:8086}
-    username: root
-    password: root
+    username: ${vcap.services.space-shuttle-db.credentials.username:root}
+    password: ${vcap.services.space-shuttle-db.credentials.password:root}
     defaultGroupingInterval: 1m
     defaultTimeLimit: 1h
     databaseName: space-shuttle-demo
 
   atkscoreengine:
-    baseUrl: http://${vcap.services.atkscoreengine.credentials.baseUrl:localhost}
+    baseUrl: ${se.url:http://localhost}
 
 logging:
   level:

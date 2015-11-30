@@ -13,10 +13,35 @@ Sample application for ATK space shuttle demo
 1. Web application asks backend application (space-shuttle-demo) for a anomalies chart.
 2. Space-shuttle-demo gets anomalies (classes different than 1) count per minute from InfluxDB.
 
+
+
+## Deploying application to TAP
+1. Create required services (of does not exist already):
+    1. Instance of InfluxDB called `space-shuttle-db`
+    1. Instance of Zookeeper called `zookeeper`
+1. Create Java package:
+  ```
+  mvn package
+  ```
+1. Edit the auto-generated manifest.yml, if necessary (e.g. to change the application host/name)
+1. Push application to the platform using command:
+  ```
+  cf push
+  ```
+1. The application is up and running, the only thing missing is the Scoring Engine location parameter (see: Scoring Engine section below)
+
+### Scoring Engine
+To set information which Scoring Engine to use, set environment variable `SE_URL`:
+```
+cf set-env space-shuttle SE_URL <scoring engine URL>
+cf restart space-shuttle
+```
+**Important note:** the address of scoring engine has to be absolute URL, which means that it has to contain protocol, e.g. `http://scoring-engine.example.com`.
+
+
 ## Local development
-#### Prerequisites
-* InfluxDB
-  * You need to install and run it locally. You can find instruction here: http://influxdb.com/docs/v0.8/introduction/installation.html
+#### InfluxDB
+  To launch space-shuttle demo application it's best to install and run the InfluxDB locally. Instructions how to do it can be found here: http://influxdb.com/docs/v0.8/introduction/installation.html
   ```
   wget http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb
   sudo dpkg -i influxdb_latest_amd64.deb
@@ -30,25 +55,11 @@ Sample application for ATK space shuttle demo
   
   After going there for first time, remember to create username and password. ```root:root``` seems to be a good choice.
 
-* Scoring Engine
-  There should be information added in environment variables about scoring engine URL. Required variable is baseUrl:
-  '''
-  {
-      "credentials": {
-       "baseUrl": "atk-scoringengine.example.com"
-      },
-      "label": "user-provided",
-      "name": "atkscoreengine",
-      "syslog_drain_url": "",
-      "tags": []
-     }
-
-  '''
 
 #### Running:
 
-To run the application type:
-```mvn spring-boot:run```
+To run the application locally type:
+```SE_URL=<scoring_engine_url> mvn spring-boot:run```
 
 
 

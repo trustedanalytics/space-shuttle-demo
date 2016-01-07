@@ -112,7 +112,7 @@ public class InfluxDataStore implements DataStore {
 
     private Map<Double, Integer> extractHistogramMaps(List<Map<String, Object>> data){
         return data.stream().map(v -> new SpaceShuttleHistogramRecord(v)).collect(Collectors
-            .toMap(SpaceShuttleHistogramRecord::getBucket, SpaceShuttleHistogramRecord::getCount));
+            .toMap(SpaceShuttleHistogramRecord::getBucketStartRounded, SpaceShuttleHistogramRecord::getCountRounded));
     }
 
     private List<String> getHistogramColumns(){

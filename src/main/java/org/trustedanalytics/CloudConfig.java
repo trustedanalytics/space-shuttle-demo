@@ -16,6 +16,7 @@
 
 package org.trustedanalytics;
 
+import com.google.common.base.Preconditions;
 import org.trustedanalytics.process.FeatureVectorDecoder;
 import org.trustedanalytics.process.ScoringProcess;
 import org.trustedanalytics.scoringengine.ATKScoringEngine;
@@ -76,7 +77,11 @@ public class CloudConfig {
         Map<String, List<KafkaStream<String, float[]>>> streams =
             consumerConnector.createMessageStreams(topicCounts, keyDecoder, valueDecoder);
 
-        return streams.get(topicName).get(0);
+        List<KafkaStream<String, float[]>> streamsByTopic = streams.get(topicName);
+        Preconditions.checkNotNull(streamsByTopic, String.format("Topic %s not found in streams map.", topicName));
+        Preconditions.checkElementIndex(0, streamsByTopic.size(),
+                String.format("List of streams of topic %s is empty.", topicName));
+        return streamsByTopic.get(0);
     }
 
     @Bean(initMethod = "init", destroyMethod = "destroy")

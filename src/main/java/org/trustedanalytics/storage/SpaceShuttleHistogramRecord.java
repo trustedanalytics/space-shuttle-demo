@@ -16,23 +16,25 @@
 
 package org.trustedanalytics.storage;
 
+import com.google.common.base.Preconditions;
 import java.util.Map;
+import lombok.Getter;
 
 public class SpaceShuttleHistogramRecord {
-    private Double bucket;
-    private Integer count;
+
+    @Getter
+    private Double bucketStartRounded;
+
+    @Getter
+    private Integer countRounded;
 
     public SpaceShuttleHistogramRecord(Map<String, Object> record){
-        Double bucket1 = (Double)record.get("bucket_start");
-        bucket = Math.round(bucket1 * 10 ) / 10.0;
-        count =  ((Double)record.get("count")).intValue();
-    }
+        Double bucketStartOriginal = (Double)record.get("bucket_start");
+        Preconditions.checkNotNull(bucketStartOriginal, "Invalid histogram record: bucket_start is null.");
+        bucketStartRounded = Math.round(bucketStartOriginal * 10 ) / 10.0;
 
-    public Integer getCount() {
-        return count;
+        Double countOriginal = (Double)record.get("count");
+        Preconditions.checkNotNull(countOriginal, "Invalid histogram record: count is null.");
+        countRounded = countOriginal.intValue();
     }
-    public Double getBucket() {
-        return bucket;
-    }
-
 }

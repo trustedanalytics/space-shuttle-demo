@@ -51,7 +51,7 @@ public class ATKScoringEngine {
             f_result = -100f;
         }
 
-        return f_result == 1.0f;
+        return f_result.compareTo(1.0f) == 0;
     }
 
     private String getUrl(){

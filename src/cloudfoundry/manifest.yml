@@ -7,5 +7,7 @@ applications:
   services:
     - space-shuttle-db
     - zookeeper
+    - space-shuttle-scoring-engine
+    - space-shuttle-gateway
   env:
     VERSION: ${version}

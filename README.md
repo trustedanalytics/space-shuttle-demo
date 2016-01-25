@@ -19,6 +19,8 @@ Sample application for ATK space shuttle demo
 1. Create required services (of does not exist already):
     1. Instance of InfluxDB called `space-shuttle-db`
     1. Instance of Zookeeper called `zookeeper`
+    1. Instance of Gateway called `space-shuttle-gateway`
+    1. Instance of Scoring Engine called `space-shuttle-scoring-engine` (details in [Scoring Engine](#scoring-engine) section below)
 1. Create Java package:
   ```
   mvn package
@@ -28,15 +30,45 @@ Sample application for ATK space shuttle demo
   ```
   cf push
   ```
-1. The application is up and running, the only thing missing is the Scoring Engine location parameter (see: Scoring Engine section below)
+1. The application is up and running
+
+### Creating Atk model
+Atk model is necessary to create instance of [Scoring Engine](#scoring-engine)
+Go to `/src/main/atkmodelgenerator/` and run `python atk_model_generator.py hdfs://path_to_training_data`
+You can use example training data set from `/src/main/client/shuttle_scale_cut_val.csv`
+You need to put this training data set on hdfs. Look at [putting file on hdfs](#putting-file-on-hdfs)
+To run script correctly need to use `python 2.7` and install python package: `pip install trustedanalytics`
+You will need to enter Atk server url and credentials
+Result of this operation is url to Atk model on hdfs
 
 ### Scoring Engine
-To set information which Scoring Engine to use, set environment variable `SE_URL`:
-```
-cf set-env space-shuttle SE_URL <scoring engine URL>
-cf restart space-shuttle
-```
-**Important note:** the address of scoring engine has to be absolute URL, which means that it has to contain protocol, e.g. `http://scoring-engine.example.com`.
+To create Scoring Engine instance you will need [Atk model](#creating-atk-model).
+If you created model or you have already existing one on hdfs, you could simply enter url to this model during creation of Scoring Engine.
+You could create instance of Scoring Engine in TAP marketplace
+Remember to click on `+ Add an extra parameter` and add Atk model url:
+key: `TAR_ARCHIVE`
+value: `hdfs://path_to_model`
+
+
+### Running the Python Client
+This client will send data on kafka topic by gateway
+Go to: `/src/main/client` 
+and run client.py: `python client.py wss://space-shuttle-gateway.{Platform domain}/ws shuttle_scale_cut_val.csv`
+To run script correctly need to use `python 2.7` and install python package: `pip install websocket-client`
+
+Note: if you copy this command, the gateway name may be different than yours. Set up a proxy if needed. 
+
+### Putting file on hdfs
+Go to TAP - `Data catalog` page
+Then select `Submit Transfer` page
+Then select input type: `Local path`
+Then select file you want to upload
+Then enter `Title`
+Then select `Upload` 
+
+When upload will be completed, you could go to page `Data sets`.
+Then select your data set.
+Here field `targetUri` contain path to submitted file on hdfs.
 
 
 ## Local development
@@ -59,7 +91,7 @@ cf restart space-shuttle
 #### Running:
 
 To run the application locally type:
-```SE_URL=<scoring_engine_url> mvn spring-boot:run```
+```mvn spring-boot:run```
 
 
 

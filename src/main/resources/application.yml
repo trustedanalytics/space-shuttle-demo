@@ -1,6 +1,6 @@
 zookeeper.connect: "${vcap.services.zookeeper.credentials.uri}/kafka"
 consumer.group: ScoringGroup
-topic: javour-topic
+gatewayUrl: ${vcap.services.space-shuttle-gateway.credentials.url}
 
 services:
   store:
@@ -13,7 +13,7 @@ services:
     databaseName: space-shuttle-demo
 
   atkscoreengine:
-    baseUrl: ${se.url:http://localhost}
+    baseUrl: ${vcap.services.space-shuttle-scoring-engine.credentials.url:http://localhost}
 
 logging:
   level:

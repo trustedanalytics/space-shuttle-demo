@@ -2,11 +2,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>space-shuttle-demo</artifactId>
-    <version>0.4.5</version>
+    <version>0.4.7</version>
     <parent>
-        <groupId>org.trustedanalytics</groupId>
-        <artifactId>trustedanalytics-cloud-parent</artifactId>
-        <version>0.4.1</version>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-parent</artifactId>
+        <version>Angel.SR3</version>
     </parent>
     <properties>
         <java.version>1.8</java.version>
@@ -36,6 +36,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.16.6</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -50,6 +51,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+            <version>18.0</version>
         </dependency>
     </dependencies>
     <build>

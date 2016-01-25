@@ -51,8 +51,8 @@ public class CloudConfig {
     @Value("${consumer.group}")
     private String consumerGroup;
 
-    @Value("${topic}")
-    private String topicName;
+    @Value("${gatewayUrl}")
+    private String gatewayUrl;
 
     @Bean
     protected ConsumerConfig consumerConfig() {
@@ -67,6 +67,8 @@ public class CloudConfig {
 
     @Bean
     protected KafkaStream<String, float[]> kafkaStream() {
+
+        final String topicName = retrieveTopicNameFromGatewayAddress(gatewayUrl);
         ConsumerConnector consumerConnector =
             Consumer.createJavaConsumerConnector(consumerConfig());
         Map<String, Integer> topicCounts = new HashMap<>();
@@ -87,5 +89,9 @@ public class CloudConfig {
     @Bean(initMethod = "init", destroyMethod = "destroy")
     protected ScoringProcess scoringConsumer(ATKScoringEngine scoringEngine, DataStore store) {
         return new ScoringProcess(kafkaStream(), scoringEngine::score, store::saveClass, store::saveFeatures);
+    }
+
+    private String retrieveTopicNameFromGatewayAddress(String gatewayUrl) {
+        return gatewayUrl.substring(0, gatewayUrl.indexOf('.'));
     }
 }

@@ -58,7 +58,7 @@ def sendData(ws):
 
 def get_proxy(http_proxy):
     if not http_proxy:
-        return None
+        return (None, None)
 
     id = http_proxy.find('://')
     if id != -1:

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/trustedanalytics/space-shuttle-demo.svg)](https://travis-ci.org/trustedanalytics/space-shuttle-demo)
+
 # space-shuttle-demo
 Sample application for ATK space shuttle demo
 

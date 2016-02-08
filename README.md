@@ -4,7 +4,7 @@
 Sample application for ATK space shuttle demo
 
 ## Overview
-![](wikiimages/SpaceShuttle.png)
+![](wikiimages/space_shuttle_demo.png)
 
 #### Scoring flow:
 1. Application space-shuttle-demo listens to kafka topic and waits for feature vectors.

@@ -18,7 +18,8 @@ Sample application for ATK space shuttle demo
 
 
 ## Deploying application to TAP
-1. Create required services (of does not exist already):
+
+1. Create required services (of does not exist already). **Please, note** that the created services have to be called exactly like the ones listed below.
     1. Instance of InfluxDB called `space-shuttle-db`
     1. Instance of Zookeeper called `zookeeper`
     1. Instance of Gateway called `space-shuttle-gateway`

@@ -1,4 +1,4 @@
-zookeeper.connect: "${vcap.services.zookeeper.credentials.uri}/kafka"
+zookeeper.connect: "${vcap.services.zookeeper.credentials.zk.cluster}/kafka"
 consumer.group: ScoringGroup
 gatewayUrl: ${vcap.services.space-shuttle-gateway.credentials.url}
 

@@ -2,7 +2,6 @@
 applications:
 - name: space-shuttle
   memory: 512M
-  host: space-shuttle
   path: target/space-shuttle-demo-${version}.jar
   services:
     - space-shuttle-db

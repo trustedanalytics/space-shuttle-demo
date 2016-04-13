@@ -25,10 +25,10 @@ import kafka.serializer.Decoder;
 public class FeatureVectorDecoder implements Decoder<float[]> {
 
     private static final Logger LOG = LoggerFactory.getLogger(FeatureVectorDecoder.class);
-    private static float[] EMPTY_VALUE = new float[] {};
-	
+    private static float[] EMPTY_VALUE = new float[]{};
+
     private final ObjectMapper mapper = new ObjectMapper();
-    
+
     @Override
     public float[] fromBytes(byte[] data) {
         try {

@@ -15,44 +15,20 @@
  */
 package org.trustedanalytics.storage;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class SpaceShuttleRecord {
 
     private Date timestamp;
     private double vectorClass;
     private double count;
 
-    public SpaceShuttleRecord() {
-    }
-
     public SpaceShuttleRecord(double timestamp, double vectorClass, double count) {
         this.timestamp = new Date((long) timestamp);
         this.vectorClass = vectorClass;
-        this.count = count;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public double getVectorClass() {
-        return vectorClass;
-    }
-
-    public void setVectorClass(double vectorClass) {
-        this.vectorClass = vectorClass;
-    }
-
-    public double getCount() {
-        return count;
-    }
-
-    public void setCount(double count) {
         this.count = count;
     }
 }

@@ -37,13 +37,9 @@ public class SpaceShuttleRecordCollector
     @Override public Supplier<Map<Double, Double>> supplier() {
         return () -> {
             Map<Double, Double> result = new HashMap<>();
-            result.put(1.0, 0.0);
-            result.put(2.0, 0.0);
-            result.put(3.0, 0.0);
-            result.put(4.0, 0.0);
-            result.put(5.0, 0.0);
-            result.put(6.0, 0.0);
-            result.put(7.0, 0.0);
+            for(int i = 1; i < 8; i++) {
+                result.put((double)i, 0.0);
+            }
             return result;
         };
     }
@@ -69,7 +65,7 @@ public class SpaceShuttleRecordCollector
     }
 
     @Override public Function<Map<Double, Double>, Map<Double, Double>> finisher() {
-        return (grouped) -> grouped;
+        return grouped -> grouped;
     }
 
     @Override public Set<Characteristics> characteristics() {

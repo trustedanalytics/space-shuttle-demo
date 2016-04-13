@@ -16,18 +16,17 @@
 
 package org.trustedanalytics.process;
 
+import lombok.Getter;
+
 import java.util.Date;
 
+@Getter
 public class FeaturesRow {
-    public Double[] features;
-    public Date time;
+    private final Double[] features;
+    private final Date time;
 
     public FeaturesRow(double time, Double[] features) {
         this.features = features;
         this.time = new Date((long) time);
-    }
-
-    public Date getTime() {
-        return time;
     }
 }

@@ -19,7 +19,7 @@ import lombok.Data;
 
 @Data
 public class Message {
-	private String id;
-	private String on;
-	private String body;
+    private String id;
+    private String on;
+    private String body;
 }

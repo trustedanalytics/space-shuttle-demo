@@ -38,20 +38,20 @@ public class ATKScoringEngine {
     public Boolean score(float[] data) {
         String commaSeparatedNumbers = convertToCommaSeparated(data);
         String url = getUrl() + commaSeparatedNumbers;
-        Float f_result;
+        Float result;
         try {
 
             RestTemplate template = new RestTemplate();
             ResponseEntity<String> response = template.postForEntity(url, null, String.class);
-            String result = response.getBody();
-            f_result = Float.parseFloat(validateResult(result));
-            LOG.debug("Score from scoring engine: {}", f_result);
+            String body = response.getBody();
+            result = Float.parseFloat(validateResult(body));
+            LOG.debug("Score from scoring engine: {}", result);
         } catch (Exception ex) {
             LOG.warn("problem with getting scoring result! " + ex.getMessage(), ex);
-            f_result = -100f;
+            result = -100f;
         }
 
-        return f_result.compareTo(1.0f) == 0;
+        return result.compareTo(1.0f) == 0;
     }
 
     private String validateResult(String data) {

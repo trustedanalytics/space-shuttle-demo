@@ -43,10 +43,8 @@ public class RestSpaceShuttleController {
 
     @RequestMapping(value = "samples")
     public Map<Date, Double[]> getSamples(@RequestParam long intervalStart, @RequestParam String intervalLength) {
-        Map<Date, Double[]> toReturn = store.readFeatures(intervalStart, intervalLength)
+        return store.readFeatures(intervalStart, intervalLength)
             .orElseThrow(() -> new NoDataInGivenInterval());
-
-        return toReturn;
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)

@@ -88,9 +88,5 @@ public class ScoringProcess {
         }
     }
 
-
-
-
-
     public void destroy() {}
 }

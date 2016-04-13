@@ -82,7 +82,7 @@ public class InfluxDataStore implements DataStore {
 
         List<Serie> result = store.query(properties.getDatabaseName(), query, TimeUnit.MILLISECONDS);
 
-        if(result.size() == 0) {
+        if(result.isEmpty()) {
             return Optional.empty();
         }
 
@@ -94,7 +94,7 @@ public class InfluxDataStore implements DataStore {
             FEATURES_COLUMNS.forEach(s -> array.add((Double) row.get(s)));
             return new FeaturesRow((Double) row.get("time"),
                 ArrayUtils.toObject(Doubles.toArray(array)));
-        }).collect(Collectors.toMap(FeaturesRow::getTime, p -> p.features)));
+        }).collect(Collectors.toMap(FeaturesRow::getTime, p -> p.getFeatures())));
     }
 
     @Override public Map<String, Map<Double, Integer>> getHistogram() {
@@ -143,7 +143,7 @@ public class InfluxDataStore implements DataStore {
 
         List<Serie> queryResult = store.query(properties.getDatabaseName(), query, TimeUnit.MILLISECONDS);
         LOG.debug("{} series read", queryResult.size());
-        if (queryResult.size() == 0) {
+        if (queryResult.isEmpty()) {
             return null;
         }
 

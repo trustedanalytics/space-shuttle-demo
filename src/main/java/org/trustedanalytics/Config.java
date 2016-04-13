@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Config {
 
-    private final static Logger LOG = LoggerFactory.getLogger(Config.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Config.class);
 
     @Autowired
     private StoreProperties storeProperties;

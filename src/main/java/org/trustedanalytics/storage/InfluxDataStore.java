@@ -15,8 +15,6 @@
  */
 package org.trustedanalytics.storage;
 
-import org.trustedanalytics.process.FeaturesRow;
-
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import org.apache.commons.lang3.ArrayUtils;
@@ -25,6 +23,7 @@ import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Serie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.trustedanalytics.process.FeaturesRow;
 
 import java.util.ArrayList;
 import java.util.Date;

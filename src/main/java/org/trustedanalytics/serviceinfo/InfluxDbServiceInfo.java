@@ -14,26 +14,21 @@
  * limitations under the License.
  */
 
-package org.trustedanalytics.service;
+package org.trustedanalytics.serviceinfo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.trustedanalytics.storage.DataStore;
+import org.springframework.cloud.service.BaseServiceInfo;
+import org.trustedanalytics.storage.StoreProperties;
 
-import java.util.Map;
+public class InfluxDbServiceInfo extends BaseServiceInfo {
 
-@RestController
-@RequestMapping(value = "/rest/space-shuttle/histogram")
-public class RestHistogramController {
+    private StoreProperties storeProperties;
 
-    @Autowired
-    private DataStore store;
+    public InfluxDbServiceInfo(String id, StoreProperties storeProperties) {
+        super(id);
+        this.storeProperties = storeProperties;
+    }
 
-    @RequestMapping
-    public Map<String, Map<Double, Integer>> createHistogram() {
-
-        return store.getHistogram();
-
+    public StoreProperties getStoreProperties() {
+        return storeProperties;
     }
 }

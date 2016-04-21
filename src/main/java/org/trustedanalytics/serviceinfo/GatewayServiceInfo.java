@@ -14,26 +14,13 @@
  * limitations under the License.
  */
 
-package org.trustedanalytics.service;
+package org.trustedanalytics.serviceinfo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.trustedanalytics.storage.DataStore;
+import org.springframework.cloud.service.UriBasedServiceInfo;
 
-import java.util.Map;
+public class GatewayServiceInfo extends UriBasedServiceInfo {
 
-@RestController
-@RequestMapping(value = "/rest/space-shuttle/histogram")
-public class RestHistogramController {
-
-    @Autowired
-    private DataStore store;
-
-    @RequestMapping
-    public Map<String, Map<Double, Integer>> createHistogram() {
-
-        return store.getHistogram();
-
+    public GatewayServiceInfo(String id, String url) {
+        super(id, url);
     }
 }

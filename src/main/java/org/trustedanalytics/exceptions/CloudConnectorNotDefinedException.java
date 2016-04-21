@@ -14,26 +14,13 @@
  * limitations under the License.
  */
 
-package org.trustedanalytics.service;
+package org.trustedanalytics.exceptions;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.trustedanalytics.storage.DataStore;
+import org.springframework.cloud.CloudException;
 
-import java.util.Map;
+public class CloudConnectorNotDefinedException extends CloudException {
 
-@RestController
-@RequestMapping(value = "/rest/space-shuttle/histogram")
-public class RestHistogramController {
-
-    @Autowired
-    private DataStore store;
-
-    @RequestMapping
-    public Map<String, Map<Double, Integer>> createHistogram() {
-
-        return store.getHistogram();
-
+    public CloudConnectorNotDefinedException(String message, Throwable e) {
+        super(message, e);
     }
 }

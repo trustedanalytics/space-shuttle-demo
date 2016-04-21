@@ -14,18 +14,24 @@
  * limitations under the License.
  */
 
-package org.trustedanalytics.scoringengine;
+package org.trustedanalytics.serviceinfo;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.service.BaseServiceInfo;
 
-import lombok.Data;
+public class ZookeeperServiceInfo extends BaseServiceInfo {
 
-@Component
-@ConfigurationProperties(ATKScoringProperties.PREFIX)
-@Data
-public class ATKScoringProperties {
-    protected static final String PREFIX = "services.atkscoreengine";
+    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperServiceInfo.class);
+    private String cluster;
 
-    private String baseUrl;
+    public ZookeeperServiceInfo(String id, String cluster) {
+        super(id);
+        this.cluster = cluster;
+    }
+
+    public String getCluster() {
+        return cluster;
+    }
+
 }

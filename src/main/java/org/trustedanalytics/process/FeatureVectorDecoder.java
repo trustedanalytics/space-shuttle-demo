@@ -15,12 +15,10 @@
  */
 package org.trustedanalytics.process;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kafka.serializer.Decoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import kafka.serializer.Decoder;
 
 public class FeatureVectorDecoder implements Decoder<float[]> {
 

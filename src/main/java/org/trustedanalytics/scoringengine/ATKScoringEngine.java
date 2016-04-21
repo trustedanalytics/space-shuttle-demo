@@ -16,23 +16,22 @@
 
 package org.trustedanalytics.scoringengine;
 
-import java.util.stream.Collectors;
-
+import com.google.common.primitives.Floats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.common.primitives.Floats;
+import java.util.stream.Collectors;
 
 public class ATKScoringEngine {
 
     private static final Logger LOG = LoggerFactory.getLogger(ATKScoringEngine.class);
 
-    private ATKScoringProperties properties;
+    private String scoringEngineUrl;
 
-    public ATKScoringEngine(ATKScoringProperties properties){
-        this.properties = properties;
+    public ATKScoringEngine(String scoringEngineUrl){
+        this.scoringEngineUrl = scoringEngineUrl;
     }
 
     public Boolean score(float[] data) {
@@ -59,7 +58,7 @@ public class ATKScoringEngine {
     }
 
     private String getUrl() {
-        return "http://" + properties.getBaseUrl() + "/v1/score?data=";
+        return "http://" + scoringEngineUrl + "/v1/score?data=";
     }
 
     private String convertToCommaSeparated(float[] data) {

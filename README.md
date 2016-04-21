@@ -53,20 +53,22 @@ Note: The TAR_ARCHIVE value (`hdfs://path_to_model`) is the result of [Creating 
 
 ## Deploying application to TAP
 
-1. Create required services (of does not exist already). **Please, note** that the created services have to be called exactly like the ones listed below.
-    1. Instance of InfluxDB called `space-shuttle-db`
-    1. Instance of Zookeeper called `zookeeper`
-    1. Instance of Gateway called `space-shuttle-gateway`
-    1. Instance of Scoring Engine called `space-shuttle-scoring-engine` (created in [Scoring Engine](#scoring-engine) paragraph)
+1. Create required service instances (if they do not exist already). Application will connect to these service instances using Spring Cloud Connectors. Note: If you use the recommended names of the required service instances they will be bound automatically with the application when it is pushed to Cloud Foundry. Otherwise, service instances names will need to be adjusted in `manifest.yml` file or removed from `manifest.yml` and bound manually after application is pushed to Cloud Foundry.
+    1. Instance of InfluxDB (recommended name: `space-shuttle-db`)
+    1. Instance of Zookeeper (recommended name: `zookeeper`)
+    1. Instance of Gateway called (recommended name: `space-shuttle-gateway`)
+    1. Instance of Scoring Engine with recommended name: `space-shuttle-scoring-engine` (created in [Scoring Engine](#scoring-engine) paragraph)
+
 1. Create Java package:
   ```
   mvn package
   ```
-1. Edit the auto-generated manifest.yml, if necessary (e.g. to change the application host/name)
+1. (Optional) Edit the auto-generated `manifest.yml`. If you created service instances with different names than recommended, adjust names of service instances in `services` section to match those that you've created. You can also remove `services` section and bind them manually later. You may also want to change the application host/name.
 1. Push application to the platform using command:
   ```
   cf push
   ```
+1. (Optional) If you removed `services` section from `manifest.yml` application will not be started yet. Bind required service instances (`cf bind-service`) to the application and restage (`cf restage`) the application.
 1. The application is up and running
 
 ## Sending data to Kafka

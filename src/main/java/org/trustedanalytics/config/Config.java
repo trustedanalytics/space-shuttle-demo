@@ -13,14 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.trustedanalytics;
+package org.trustedanalytics.config;
 
 import com.google.common.base.Preconditions;
-import org.trustedanalytics.process.FeatureVectorDecoder;
-import org.trustedanalytics.process.ScoringProcess;
-import org.trustedanalytics.scoringengine.ATKScoringEngine;
-import org.trustedanalytics.storage.DataStore;
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;
 import kafka.consumer.KafkaStream;
@@ -29,10 +24,17 @@ import kafka.serializer.StringDecoder;
 import kafka.utils.VerifiableProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.trustedanalytics.process.FeatureVectorDecoder;
+import org.trustedanalytics.process.ScoringProcess;
+import org.trustedanalytics.scoringengine.ATKScoringEngine;
+import org.trustedanalytics.storage.DataStore;
+import org.trustedanalytics.storage.InfluxDataStore;
+import org.trustedanalytics.storage.StoreProperties;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,28 +43,33 @@ import java.util.Properties;
 
 @Configuration
 @Profile("cloud")
-public class CloudConfig {
+public class Config {
 
-    private final static Logger LOG = LoggerFactory.getLogger(CloudConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Config.class);
 
-    @Value("${zookeeper.connect}")
-    private String zookeeper;
+    @Autowired
+    private String scoringEngineUrl;
+
+    @Autowired
+    private String gatewayUrl;
+
+    @Autowired
+    private String zookeeperCluster;
 
     @Value("${consumer.group}")
     private String consumerGroup;
 
-    @Value("${gatewayUrl}")
-    private String gatewayUrl;
+    @Bean
+    public DataStore store(StoreProperties storeProperties) {
+        LOG.debug("influx config: " + storeProperties);
+        LOG.info("Connecting to influxdb instance on " + storeProperties.getFullUrl());
+        return new InfluxDataStore(storeProperties);
+    }
 
     @Bean
-    protected ConsumerConfig consumerConfig() {
-        Properties props = new Properties();
-        props.put("zookeeper.connect", zookeeper);
-        props.put("group.id", consumerGroup);
-        props.put("zookeeper.session.timeout.ms", "1000");
-        props.put("zookeeper.sync.time.ms", "200");
-        props.put("auto.commit.interval.ms", "1000");
-        return new ConsumerConfig(props);
+    protected ATKScoringEngine scoringEngine() {
+        LOG.info("Creating ATKScoringEngline with url: " + scoringEngineUrl);
+        return new ATKScoringEngine(scoringEngineUrl);
     }
 
     @Bean
@@ -70,14 +77,14 @@ public class CloudConfig {
 
         final String topicName = retrieveTopicNameFromGatewayAddress(gatewayUrl);
         ConsumerConnector consumerConnector =
-            Consumer.createJavaConsumerConnector(consumerConfig());
+                Consumer.createJavaConsumerConnector(consumerConfig());
         Map<String, Integer> topicCounts = new HashMap<>();
         topicCounts.put(topicName, 1);
         VerifiableProperties emptyProps = new VerifiableProperties();
         StringDecoder keyDecoder = new StringDecoder(emptyProps);
         FeatureVectorDecoder valueDecoder = new FeatureVectorDecoder();
         Map<String, List<KafkaStream<String, float[]>>> streams =
-            consumerConnector.createMessageStreams(topicCounts, keyDecoder, valueDecoder);
+                consumerConnector.createMessageStreams(topicCounts, keyDecoder, valueDecoder);
 
         List<KafkaStream<String, float[]>> streamsByTopic = streams.get(topicName);
         Preconditions.checkNotNull(streamsByTopic, String.format("Topic %s not found in streams map.", topicName));
@@ -86,6 +93,7 @@ public class CloudConfig {
         return streamsByTopic.get(0);
     }
 
+
     @Bean(initMethod = "init", destroyMethod = "destroy")
     protected ScoringProcess scoringConsumer(ATKScoringEngine scoringEngine, DataStore store) {
         return new ScoringProcess(kafkaStream(), scoringEngine::score, store::saveClass, store::saveFeatures);
@@ -93,5 +101,16 @@ public class CloudConfig {
 
     private String retrieveTopicNameFromGatewayAddress(String gatewayUrl) {
         return gatewayUrl.substring(0, gatewayUrl.indexOf('.'));
+    }
+
+    @Bean
+    protected ConsumerConfig consumerConfig() {
+        Properties props = new Properties();
+        props.put("zookeeper.connect", zookeeperCluster);
+        props.put("group.id", consumerGroup);
+        props.put("zookeeper.session.timeout.ms", "1000");
+        props.put("zookeeper.sync.time.ms", "200");
+        props.put("auto.commit.interval.ms", "1000");
+        return new ConsumerConfig(props);
     }
 }

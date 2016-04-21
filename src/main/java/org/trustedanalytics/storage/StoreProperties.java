@@ -17,15 +17,15 @@ package org.trustedanalytics.storage;
 
 import lombok.Data;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import java.util.Map;
 
-@Component
-@ConfigurationProperties(StoreProperties.PREFIX)
 @Data
 public class StoreProperties {
 
-    protected static final String PREFIX = "services.store";
+    private static final String DEFAULT_GROUPING_INTERVAL = "1m";
+    private static final String DEFAULT_TIME_LIMIT = "1h";
+    private static final String DATABASE_NAME = "space-shuttle-demo";
+    private static final String URI_SCHEME = "http://";
 
     private String baseUrl;
     private String apiPort;
@@ -34,6 +34,21 @@ public class StoreProperties {
     private String defaultGroupingInterval;
     private String defaultTimeLimit;
     private String databaseName;
+
+    public StoreProperties(Map<String, Object> serviceCredentials) {
+        this(serviceCredentials, DEFAULT_GROUPING_INTERVAL, DEFAULT_TIME_LIMIT, DATABASE_NAME);
+    }
+
+    public StoreProperties(Map<String, Object> serviceCredentials, String defaultGroupingInterval,
+                           String defaultTimeLimit, String databaseName) {
+        this.baseUrl = URI_SCHEME + (String) serviceCredentials.get("hostname");
+        this.apiPort = (String) ((Map<String, Object>)serviceCredentials.get("ports")).get("8086/tcp");
+        this.username = (String) serviceCredentials.get("username");
+        this.password = (String) serviceCredentials.get("password");
+        this.defaultGroupingInterval = defaultGroupingInterval;
+        this.defaultTimeLimit = defaultTimeLimit;
+        this.databaseName = databaseName;
+    }
 
     public String getFullUrl() {
         return baseUrl + ":" + apiPort;

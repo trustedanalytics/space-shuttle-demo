@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.trustedanalytics</groupId>
     <artifactId>space-shuttle-demo</artifactId>
-    <version>0.4.13</version>
+    <version>0.4.14</version>
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
@@ -91,7 +91,11 @@
                 <artifactId>license-maven-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <header>license/license_header.txt</header>
+                    <header>license/license_header_2016.txt</header>
+		    <validHeaders>
+                        <validHeader>license/license_header_2015.txt</validHeader>
+                        <validHeader>license/license_header_2016.txt</validHeader>
+                    </validHeaders>
                     <includes>
                         <include>src/**/*.java</include>
                         <include>tools/*.py</include>
@@ -100,6 +104,7 @@
                         <include>src/main/resources/**/*.css</include>
                         <include>src/main/resources/**/*.html</include>
                         <include>license/*.sh</include>
+			<include>pack.sh</include>
                     </includes>
                     <excludes>
                         <exclude>src/main/client/venv/**</exclude>

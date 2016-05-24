@@ -54,6 +54,8 @@ Note: The TAR_ARCHIVE value (`hdfs://path_to_model`) is the result of [Creating 
 
 ## Deploying application to TAP
 
+### Manual deployment
+
 1. Create required service instances (if they do not exist already). Application will connect to these service instances using Spring Cloud Connectors. Note: If you use the recommended names of the required service instances they will be bound automatically with the application when it is pushed to Cloud Foundry. Otherwise, service instances names will need to be adjusted in `manifest.yml` file or removed from `manifest.yml` and bound manually after application is pushed to Cloud Foundry.
     1. Instance of InfluxDB (recommended name: `space-shuttle-db`)
     1. Instance of Zookeeper (recommended name: `zookeeper`)
@@ -71,6 +73,13 @@ Note: The TAR_ARCHIVE value (`hdfs://path_to_model`) is the result of [Creating 
   ```
 1. (Optional) If you removed `services` section from `manifest.yml` application will not be started yet. Bind required service instances (`cf bind-service`) to the application and restage (`cf restage`) the application.
 1. The application is up and running
+
+### Automated deployment
+* Switch to `deploy` directory: `cd deploy`
+* Install tox: `sudo -E pip install --upgrade tox`
+* Run: `tox`
+* Activate virtualenv with installed dependencies: `. .tox/py27/bin/activate`
+* Run deployment script: `python deploy.py`, the script will use parameters provided on input. Alternatively, provide parameters when running script. (`python deploy.py -h` to check script parameters with their descriptions).
 
 ## Sending data to Kafka
 

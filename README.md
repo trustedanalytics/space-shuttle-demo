@@ -39,6 +39,8 @@ To run script correctly need to use `python 2.7` and install python package: `pi
 You will need to enter Atk server url and credentials
 Result of this operation is url to Atk model on hdfs
 
+Alternatively, the trained model can be downloaded [here](https://s3.amazonaws.com/trustedanalytics/v0.7.0/models/space-shuttle-model.tar).
+
 #### Scoring Engine
 To create Scoring Engine instance you will need [Atk model](#creating-atk-model).
 When you have the model prepared, you can create a new instance of Scoring Engine from Marketplace:

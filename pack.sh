@@ -38,6 +38,9 @@ cp --parents client/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents atkmodelgenerator/atk_model_generator.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents atkmodelgenerator/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
 cd ${BASE_DIR}
+cp --parents deploy/deploy.py ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents deploy/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents deploy/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
 
 # prepare build manifest
 echo "commit_sha=$(git rev-parse HEAD)" > ${PACKAGE_CATALOG}/build_info.ini

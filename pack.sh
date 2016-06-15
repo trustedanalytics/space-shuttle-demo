@@ -45,6 +45,7 @@ cd ${BASE_DIR}
 rm -rf deploy/vendor
 mkdir deploy/vendor
 pip install --download deploy/vendor -r deploy/requirements.txt
+pip install --download deploy/vendor -r src/main/client/requirements.txt
 
 cp --parents deploy/deploy.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents deploy/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}

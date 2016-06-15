@@ -1,0 +1,10 @@
+---
+applications:
+ - name: space_shuttle_client
+   command: python space_shuttle_client.py
+   memory: 128M
+   disk_quota: 256M
+   buildpack: python_buildpack
+   no-route: true
+   services:
+    - space-shuttle-gateway

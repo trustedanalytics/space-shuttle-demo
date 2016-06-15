@@ -41,16 +41,16 @@ ARGS = PARSER.parse_args()
 CF_INFO = cf_helpers.get_info(ARGS)
 cf_cli.login(CF_INFO)
 
-LOGGER.info('Creating required service instances...')
-cf_cli.create_service('influxdb088', 'free', 'space-shuttle-db')
-cf_cli.create_service('zookeeper', 'shared', 'space-shuttle-zookeeper')
-cf_cli.create_service('gateway', 'Simple', 'space-shuttle-gateway')
-
 LOGGER.info('Uploading model to HDFS...')
 LOCAL_MODEL_PATH = ARGS.path_to_model if ARGS.path_to_model else 'model.tar'
 HDFS_MODEL_PATH = cf_helpers.upload_to_hdfs(CF_INFO.api_url, CF_INFO.org,
                                             LOCAL_MODEL_PATH,
                                             'model')
+
+LOGGER.info('Creating required service instances...')
+cf_cli.create_service('influxdb088', 'free', 'space-shuttle-db')
+cf_cli.create_service('zookeeper', 'shared', 'space-shuttle-zookeeper')
+cf_cli.create_service('gateway', 'Simple', 'space-shuttle-gateway')
 
 LOGGER.info('Creating scoring engine...')
 cf_cli.create_service('scoring-engine', 'Simple',
@@ -66,4 +66,9 @@ if not ARGS.no_build:
 
 LOGGER.info('Pushing application to Cloud Foundry...')
 cf_helpers.push(work_dir=PROJECT_DIR, options=ARGS.app_name)
+
+CLIENT_DIR = PROJECT_DIR + "/src/main/client"
+
+LOGGER.info('Pushing application client to Cloud Foundry...')
+cf_helpers.push(work_dir=CLIENT_DIR)
 

@@ -45,7 +45,7 @@ HDFS_MODEL_PATH = cf_helpers.upload_to_hdfs(ARGS.base_url, CF_INFO.org,
                                             'model')
 cf_cli.create_service('scoring-engine', 'Simple',
                       'space-shuttle-scoring-engine',
-                      json.dumps({"TAR_ARCHIVE": HDFS_MODEL_PATH}))
+                      json.dumps({"uri": HDFS_MODEL_PATH}))
 
 PROJECT_DIR = ARGS.project_dir if ARGS.project_dir else \
     cf_helpers.get_project_dir()

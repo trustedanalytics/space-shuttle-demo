@@ -16,8 +16,6 @@
 
 package org.trustedanalytics.serviceinfo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.cloudfoundry.CloudFoundryServiceInfoCreator;
 import org.springframework.cloud.cloudfoundry.Tags;
 import org.trustedanalytics.config.ServicesConfig;
@@ -27,8 +25,6 @@ import java.util.Map;
 
 public class InfluxDbServiceInfoCreator extends CloudFoundryServiceInfoCreator<InfluxDbServiceInfo> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(InfluxDbServiceInfoCreator.class);
-
     public InfluxDbServiceInfoCreator() {
         super(new Tags(ServicesConfig.INFLUXDB_ID));
     }
@@ -36,7 +32,7 @@ public class InfluxDbServiceInfoCreator extends CloudFoundryServiceInfoCreator<I
     @Override
     public boolean accept(Map<String, Object> serviceData) {
         String label = (String) serviceData.get("label");
-        return label.startsWith(ServicesConfig.INFLUXDB_ID);
+        return label != null && label.startsWith(ServicesConfig.INFLUXDB_ID);
     }
 
     @Override

@@ -16,8 +16,6 @@
 
 package org.trustedanalytics.serviceinfo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.cloudfoundry.CloudFoundryServiceInfoCreator;
 import org.springframework.cloud.cloudfoundry.Tags;
 import org.trustedanalytics.config.ServicesConfig;
@@ -26,7 +24,6 @@ import java.util.Map;
 
 public class ZookeeperServiceInfoCreator extends CloudFoundryServiceInfoCreator<ZookeeperServiceInfo> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperServiceInfoCreator.class);
     private static final String POSTFIX = "/kafka";
 
     public ZookeeperServiceInfoCreator() {

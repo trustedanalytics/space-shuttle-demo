@@ -16,8 +16,6 @@
 
 package org.trustedanalytics.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.Cloud;
 import org.springframework.cloud.CloudException;
 import org.springframework.cloud.CloudFactory;
@@ -29,8 +27,6 @@ import org.trustedanalytics.exceptions.CloudConnectorNotDefinedException;
 @Configuration
 @Profile("cloud")
 public class CloudConfig {
-
-    private static final Logger LOG = LoggerFactory.getLogger(CloudConfig.class);
 
     @Bean
     public Cloud cloud() {

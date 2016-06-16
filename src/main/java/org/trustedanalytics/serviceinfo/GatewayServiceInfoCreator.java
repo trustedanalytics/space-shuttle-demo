@@ -16,8 +16,6 @@
 
 package org.trustedanalytics.serviceinfo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.cloudfoundry.CloudFoundryServiceInfoCreator;
 import org.springframework.cloud.cloudfoundry.Tags;
 import org.trustedanalytics.config.ServicesConfig;
@@ -25,8 +23,6 @@ import org.trustedanalytics.config.ServicesConfig;
 import java.util.Map;
 
 public class GatewayServiceInfoCreator extends CloudFoundryServiceInfoCreator<GatewayServiceInfo> {
-
-    private static final Logger LOG = LoggerFactory.getLogger(GatewayServiceInfoCreator.class);
 
     public GatewayServiceInfoCreator() {
         super(new Tags(ServicesConfig.GATEWAY_ID));

@@ -24,6 +24,7 @@ public class StoreProperties {
 
     private static final String DEFAULT_GROUPING_INTERVAL = "1m";
     private static final String DEFAULT_TIME_LIMIT = "1h";
+    private static final String DEFAULT_API_PORT = "8086";
     private static final String DATABASE_NAME = "space-shuttle-demo";
     private static final String URI_SCHEME = "http://";
 
@@ -42,7 +43,12 @@ public class StoreProperties {
     public StoreProperties(Map<String, Object> serviceCredentials, String defaultGroupingInterval,
                            String defaultTimeLimit, String databaseName) {
         this.baseUrl = URI_SCHEME + (String) serviceCredentials.get("hostname");
-        this.apiPort = (String) ((Map<String, Object>)serviceCredentials.get("ports")).get("8086/tcp");
+        Map<String, Object> ports = (Map<String, Object>) serviceCredentials.get("ports");
+        if (ports != null && ports.containsKey("8086/tcp")) {
+            this.apiPort = (String) ports.get("8086/tcp");
+        } else {
+            this.apiPort = DEFAULT_API_PORT;
+        }
         this.username = (String) serviceCredentials.get("username");
         this.password = (String) serviceCredentials.get("password");
         this.defaultGroupingInterval = defaultGroupingInterval;

@@ -46,7 +46,7 @@ cf_cli.create_service('gateway', 'Simple', 'space-shuttle-gateway')
 
 LOGGER.info('Uploading model to HDFS...')
 LOCAL_MODEL_PATH = ARGS.path_to_model if ARGS.path_to_model else 'model.tar'
-HDFS_MODEL_PATH = cf_helpers.upload_to_hdfs(ARGS.api_url, CF_INFO.org,
+HDFS_MODEL_PATH = cf_helpers.upload_to_hdfs(CF_INFO.api_url, CF_INFO.org,
                                             LOCAL_MODEL_PATH,
                                             'model')
 

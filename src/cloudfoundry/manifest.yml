@@ -5,7 +5,7 @@ applications:
   path: target/space-shuttle-demo-${version}.jar
   services:
     - space-shuttle-db
-    - zookeeper
+    - space-shuttle-zookeeper
     - space-shuttle-scoring-engine
     - space-shuttle-gateway
   env:

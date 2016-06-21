@@ -39,7 +39,6 @@ public class ATKScoringEngine {
         String url = getUrl() + commaSeparatedNumbers;
         Float result;
         try {
-
             RestTemplate template = new RestTemplate();
             ResponseEntity<String> response = template.postForEntity(url, null, String.class);
             String body = response.getBody();

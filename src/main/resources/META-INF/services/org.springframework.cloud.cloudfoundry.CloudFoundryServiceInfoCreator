@@ -1,4 +1,5 @@
-org.trustedanalytics.serviceinfo.ScoringEngineServiceInfoCreator
 org.trustedanalytics.serviceinfo.GatewayServiceInfoCreator
 org.trustedanalytics.serviceinfo.InfluxDbServiceInfoCreator
+org.trustedanalytics.serviceinfo.MqttServiceInfoCreator
+org.trustedanalytics.serviceinfo.ScoringEngineServiceInfoCreator
 org.trustedanalytics.serviceinfo.ZookeeperServiceInfoCreator

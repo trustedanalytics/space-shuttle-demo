@@ -10,3 +10,4 @@ applications:
     - space-shuttle-gateway
   env:
     VERSION: ${version}
+    SPRING_PROFILES_ACTIVE: cloud,kafka

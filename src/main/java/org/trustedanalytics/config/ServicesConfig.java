@@ -25,8 +25,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.serviceinfo.GatewayServiceInfo;
 import org.trustedanalytics.serviceinfo.InfluxDbServiceInfo;
-import org.trustedanalytics.serviceinfo.ScoringEngineServiceInfo;
+import org.trustedanalytics.serviceinfo.MqttProperties;
 import org.trustedanalytics.serviceinfo.ZookeeperServiceInfo;
+import org.trustedanalytics.serviceinfo.MqttServiceInfo;
+import org.trustedanalytics.serviceinfo.ScoringEngineServiceInfo;
 import org.trustedanalytics.storage.StoreProperties;
 
 @Configuration
@@ -38,6 +40,7 @@ public class ServicesConfig {
     public static final String INFLUXDB_ID = "influxdb";
     public static final String SCORING_ENGINE_ID = "scoring-engine";
     public static final String ZOOKEEPER_ID = "zookeeper";
+    public static final String MQTT_ID = "mosquitto14";
 
     @Autowired
     private Cloud cloud;
@@ -58,6 +61,12 @@ public class ServicesConfig {
     public StoreProperties storeProperties() {
         InfluxDbServiceInfo influxDbServiceInfo = (InfluxDbServiceInfo) cloud.getServiceInfo(INFLUXDB_ID);
         return influxDbServiceInfo.getStoreProperties();
+    }
+
+    @Bean
+    public MqttProperties mqttProperties() {
+        MqttServiceInfo mqttServiceInfo = (MqttServiceInfo) cloud.getServiceInfo(MQTT_ID);
+        return mqttServiceInfo.getMqttProperties();
     }
 
     @Bean

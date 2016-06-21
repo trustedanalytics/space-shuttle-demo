@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 Intel Corporation
+ * Copyright (c) 2016 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.trustedanalytics.process;
 
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
-import kafka.consumer.KafkaStream;
+import lombok.Data;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,40 +27,31 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class ScoringProcess {
-    private static final Logger LOG = LoggerFactory.getLogger(ScoringProcess.class);
+@Data
+public class DataConsumer implements ProcessConsumer {
 
-    private final KafkaStream<String, float[]> kafkaStream;
+    private static final Logger LOG = LoggerFactory.getLogger(DataConsumer.class);
     private final Function<float[], Boolean> scoringEngine;
     private final Consumer<Double> scoringStore;
     private final Consumer<Double[]> featuresStore;
 
-    public ScoringProcess(KafkaStream<String, float[]> stream,
-        Function<float[], Boolean> scoringEngine, Consumer<Double> scoringStore,
-        Consumer<Double[]> featuresStore) {
-        this.kafkaStream = stream;
+    public DataConsumer(Function<float[], Boolean> scoringEngine,
+                        Consumer<Double> scoringStore, Consumer<Double[]> featuresStore) {
         this.scoringEngine = scoringEngine;
         this.scoringStore = scoringStore;
         this.featuresStore = featuresStore;
     }
 
-    public void init() {
-        new Thread(() -> {
-            LOG.info("start consumer thread");
-            kafkaStream.forEach(v -> processMessage(v.message()));
-            LOG.info("stop consumer thread");
-        }).start();
-    }
-
-    public void processMessage(float[] message){
+    @Override
+    public void processMessage(float[] message) {
         LOG.debug("message: {}", message);
 
 
         // minimal requirement is a class and one characteristics value
         if (message.length < 2) {
             LOG.warn(
-                "Bad input data format: we're looking for at least 2 array elements, but got only {}",
-                message.length);
+                    "Bad input data format: we're looking for at least 2 array elements, but got only {}",
+                    message.length);
             return;
         }
 
@@ -87,6 +79,4 @@ public class ScoringProcess {
             LOG.error("Procesing feature vector failed", ex);
         }
     }
-
-    public void destroy() {}
 }

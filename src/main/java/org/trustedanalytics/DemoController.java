@@ -19,9 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.trustedanalytics.process.ScoringProcess;
+import org.trustedanalytics.process.ProcessConsumer;
 import org.trustedanalytics.scoringengine.ATKScoringEngine;
-import org.trustedanalytics.storage.DataStore;
 
 @RestController
 public class DemoController {
@@ -32,8 +31,7 @@ public class DemoController {
     @Autowired
     ATKScoringEngine scoring;
 
-    @Autowired
-    private DataStore store;
+    @Autowired ProcessConsumer process;
 
     @RequestMapping("/test")
     String test() {
@@ -47,15 +45,12 @@ public class DemoController {
                         0.463884f, 0.40836f};
         Boolean res = scoring.score(data);
         return res.toString();
-
     }
 
     @RequestMapping("/test-add")
     void addTest() {
-        ScoringProcess process = new ScoringProcess(null, scoring::score, store::saveClass, store::saveFeatures);
         float[] data = {0.0f, -0.414141f, -0.0246564f, -0.125f, 0.0140301f, -0.474359f, 0.0256049f, -0.0980392f,
             0.463884f, 0.40836f};
         process.processMessage(data);
-
     }
 }

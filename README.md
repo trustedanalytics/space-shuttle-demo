@@ -40,7 +40,7 @@ Sample application for ATK space shuttle demo
      * Select `TAP Scoring Engine` service offering
      * Type name `space-shuttle-scoring-engine`
      * Click `+ Add an extra parameter` and add TAP Analytics Toolkit model url:
-        key: `TAR_ARCHIVE`
+        key: `uri`
         value: `hdfs://path_to_model`
      * Click `Create new instance`
 

@@ -41,7 +41,7 @@ cf_cli.login(CF_INFO)
 
 LOGGER.info('Creating required service instances...')
 cf_cli.create_service('influxdb088', 'free', 'space-shuttle-db')
-cf_cli.create_service('zookeeper', 'shared', 'zookeeper')
+cf_cli.create_service('zookeeper', 'shared', 'space-shuttle-zookeeper')
 cf_cli.create_service('gateway', 'Simple', 'space-shuttle-gateway')
 
 LOGGER.info('Uploading model to HDFS...')

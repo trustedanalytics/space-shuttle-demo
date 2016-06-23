@@ -43,7 +43,7 @@ public class ATKScoringEngine {
             RestTemplate template = new RestTemplate();
             ResponseEntity<String> response = template.postForEntity(url, null, String.class);
             String body = response.getBody();
-            result = Float.parseFloat(validateResult(body));
+            result = Float.parseFloat(body);
             LOG.debug("Score from scoring engine: {}", result);
         } catch (Exception ex) {
             LOG.warn("problem with getting scoring result! " + ex.getMessage(), ex);
@@ -51,10 +51,6 @@ public class ATKScoringEngine {
         }
 
         return result.compareTo(1.0f) == 0;
-    }
-
-    private String validateResult(String data) {
-        return data.substring(data.indexOf('(') + 1, data.indexOf(')'));
     }
 
     private String getUrl() {

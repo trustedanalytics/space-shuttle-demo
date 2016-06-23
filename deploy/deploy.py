@@ -34,6 +34,8 @@ PARSER.add_argument('--path_to_model', type=str,
                     help='Path to a model for scoring-engine on local '
                          'machine, eg. /path/to/model/model.tar, '
                          'default path is "./model.tar"')
+PARSER.add_argument('--no_build', action='store_true',
+                    help='Do not build project package with Maven')
 ARGS = PARSER.parse_args()
 
 CF_INFO = cf_helpers.get_info(ARGS)
@@ -58,8 +60,9 @@ cf_cli.create_service('scoring-engine', 'Simple',
 PROJECT_DIR = ARGS.project_dir if ARGS.project_dir else \
     cf_helpers.get_project_dir()
 
-LOGGER.info('Creating artifact package...')
-cf_helpers.prepare_package(work_dir=PROJECT_DIR)
+if not ARGS.no_build:
+    LOGGER.info('Creating artifact package...')
+    cf_helpers.prepare_package(work_dir=PROJECT_DIR)
 
 LOGGER.info('Pushing application to Cloud Foundry...')
 cf_helpers.push(work_dir=PROJECT_DIR, options=ARGS.app_name)

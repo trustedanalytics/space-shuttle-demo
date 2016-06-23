@@ -17,7 +17,7 @@
 set -e
 
 VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\[' | tail -1)
-PROJECT_NAME=$(basename $(pwd))
+PROJECT_NAME=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.name | grep -v '\[' | tail -1)
 PACKAGE_CATALOG=${PROJECT_NAME}-${VERSION}
 JAR_NAME="${PACKAGE_CATALOG}.jar"
 

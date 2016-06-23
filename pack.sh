@@ -45,6 +45,10 @@ cp --parents deploy/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents deploy/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents -r deploy/vendor ${BASE_DIR}/${PACKAGE_CATALOG}
 
+# download scoring engine model
+wget https://s3.amazonaws.com/trustedanalytics/v0.7.0/models/space-shuttle-model.tar
+cp space-shuttle-model.tar ${BASE_DIR}/${PACKAGE_CATALOG}
+
 # prepare build manifest
 echo "commit_sha=$(git rev-parse HEAD)" > ${PACKAGE_CATALOG}/build_info.ini
 

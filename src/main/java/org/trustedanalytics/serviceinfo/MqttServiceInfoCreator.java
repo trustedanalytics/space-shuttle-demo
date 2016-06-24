@@ -19,28 +19,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.cloudfoundry.CloudFoundryServiceInfoCreator;
 import org.springframework.cloud.cloudfoundry.Tags;
-import org.trustedanalytics.config.ServicesConfig;
 
 import java.util.Map;
 
 public class MqttServiceInfoCreator extends CloudFoundryServiceInfoCreator<MqttServiceInfo> {
 
     private static final Logger LOG = LoggerFactory.getLogger(MqttServiceInfoCreator.class);
+    public static final String MQTT_ID = "mosquitto14";
 
     public MqttServiceInfoCreator() {
-        super(new Tags(ServicesConfig.MQTT_ID));
+        super(new Tags(MQTT_ID));
     }
 
     @Override
     public boolean accept(Map<String, Object> serviceData) {
         String label = (String) serviceData.get("label");
-        return label.equals(ServicesConfig.MQTT_ID);
+        return label.equals(MQTT_ID);
     }
 
     @Override
     public MqttServiceInfo createServiceInfo(Map<String, Object> serviceData) {
         MqttProperties mqttProperties = getMqttProperties(serviceData);
-        return new MqttServiceInfo(ServicesConfig.MQTT_ID, mqttProperties);
+        return new MqttServiceInfo(MQTT_ID, mqttProperties);
     }
 
     private MqttProperties getMqttProperties(Map<String, Object> serviceData) {

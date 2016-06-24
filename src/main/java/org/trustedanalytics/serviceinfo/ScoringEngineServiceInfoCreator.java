@@ -18,26 +18,27 @@ package org.trustedanalytics.serviceinfo;
 
 import org.springframework.cloud.cloudfoundry.CloudFoundryServiceInfoCreator;
 import org.springframework.cloud.cloudfoundry.Tags;
-import org.trustedanalytics.config.ServicesConfig;
 
 import java.util.Map;
 
 public class ScoringEngineServiceInfoCreator extends CloudFoundryServiceInfoCreator<ScoringEngineServiceInfo> {
 
+    public static final String SCORING_ENGINE_ID = "scoring-engine";
+
     public ScoringEngineServiceInfoCreator() {
-        super(new Tags(ServicesConfig.SCORING_ENGINE_ID));
+        super(new Tags(SCORING_ENGINE_ID));
     }
 
     @Override
     public boolean accept(Map<String, Object> serviceData) {
         String label = (String) serviceData.get("label");
-        return ServicesConfig.SCORING_ENGINE_ID.equals(label);
+        return SCORING_ENGINE_ID.equals(label);
     }
 
     @Override
     public ScoringEngineServiceInfo createServiceInfo(Map<String, Object> serviceData) {
         Map<String, Object> credentials = getCredentials(serviceData);
         String scoringEngineUrl = (String) credentials.get("url");
-        return new ScoringEngineServiceInfo(ServicesConfig.SCORING_ENGINE_ID, scoringEngineUrl);
+        return new ScoringEngineServiceInfo(SCORING_ENGINE_ID, scoringEngineUrl);
     }
 }

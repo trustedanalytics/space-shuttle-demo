@@ -18,22 +18,22 @@ package org.trustedanalytics.serviceinfo;
 
 import org.springframework.cloud.cloudfoundry.CloudFoundryServiceInfoCreator;
 import org.springframework.cloud.cloudfoundry.Tags;
-import org.trustedanalytics.config.ServicesConfig;
 
 import java.util.Map;
 
 public class ZookeeperServiceInfoCreator extends CloudFoundryServiceInfoCreator<ZookeeperServiceInfo> {
 
+    public static final String ZOOKEEPER_ID = "zookeeper";
     private static final String POSTFIX = "/kafka";
 
     public ZookeeperServiceInfoCreator() {
-        super(new Tags(ServicesConfig.ZOOKEEPER_ID));
+        super(new Tags(ZOOKEEPER_ID));
     }
 
     @Override
     public ZookeeperServiceInfo createServiceInfo(Map<String, Object> serviceData) {
         Map<String, Object> credentials = getCredentials(serviceData);
         String cluster = (String) credentials.get("zk.cluster");
-        return new ZookeeperServiceInfo(ServicesConfig.ZOOKEEPER_ID, cluster + POSTFIX);
+        return new ZookeeperServiceInfo(ZOOKEEPER_ID, cluster + POSTFIX);
     }
 }

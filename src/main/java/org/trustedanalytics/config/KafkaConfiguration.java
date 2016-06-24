@@ -27,12 +27,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.Cloud;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.DataProviders.KafkaDataProvider;
 import org.trustedanalytics.process.DataConsumer;
 import org.trustedanalytics.process.FeatureVectorDecoder;
+import org.trustedanalytics.serviceinfo.GatewayServiceInfo;
+import org.trustedanalytics.serviceinfo.GatewayServiceInfoCreator;
+import org.trustedanalytics.serviceinfo.ZookeeperServiceInfo;
+import org.trustedanalytics.serviceinfo.ZookeeperServiceInfoCreator;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,18 +51,16 @@ public class KafkaConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(KafkaConfiguration.class);
 
     @Autowired
-    private String gatewayUrl;
-
-    @Autowired
-    private String zookeeperCluster;
+    private Cloud cloud;
 
     @Value("${consumer.group}")
     private String consumerGroup;
 
+
     @Bean
     protected KafkaStream<String, float[]> kafkaStream() {
 
-        final String topicName = retrieveTopicNameFromGatewayAddress(gatewayUrl);
+        final String topicName = retrieveTopicNameFromGatewayAddress(gatewayUrl());
         ConsumerConnector consumerConnector =
                 Consumer.createJavaConsumerConnector(consumerConfig());
         Map<String, Integer> topicCounts = new HashMap<>();
@@ -80,18 +83,27 @@ public class KafkaConfiguration {
         return new KafkaDataProvider(dataConsumer, kafkaStream);
     }
 
-    private String retrieveTopicNameFromGatewayAddress(String gatewayUrl) {
-        return gatewayUrl.substring(0, gatewayUrl.indexOf('.'));
-    }
-
-    @Bean
-    protected ConsumerConfig consumerConfig() {
+    private ConsumerConfig consumerConfig() {
         Properties props = new Properties();
-        props.put("zookeeper.connect", zookeeperCluster);
+        props.put("zookeeper.connect", zookeeperCluster());
         props.put("group.id", consumerGroup);
         props.put("zookeeper.session.timeout.ms", "1000");
         props.put("zookeeper.sync.time.ms", "200");
         props.put("auto.commit.interval.ms", "1000");
         return new ConsumerConfig(props);
+    }
+
+    private String retrieveTopicNameFromGatewayAddress(String gatewayUrl) {
+        return gatewayUrl.substring(0, gatewayUrl.indexOf('.'));
+    }
+
+    private String zookeeperCluster() {
+        ZookeeperServiceInfo zookeeperServiceInfo = (ZookeeperServiceInfo) cloud.getServiceInfo(ZookeeperServiceInfoCreator.ZOOKEEPER_ID);
+        return zookeeperServiceInfo.getCluster();
+    }
+
+    private String gatewayUrl() {
+        GatewayServiceInfo gatewayServiceInfo = (GatewayServiceInfo) cloud.getServiceInfo(GatewayServiceInfoCreator.GATEWAY_ID);
+        return gatewayServiceInfo.getUri();
     }
 }

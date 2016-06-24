@@ -18,14 +18,15 @@ package org.trustedanalytics.serviceinfo;
 
 import org.springframework.cloud.cloudfoundry.CloudFoundryServiceInfoCreator;
 import org.springframework.cloud.cloudfoundry.Tags;
-import org.trustedanalytics.config.ServicesConfig;
 
 import java.util.Map;
 
 public class GatewayServiceInfoCreator extends CloudFoundryServiceInfoCreator<GatewayServiceInfo> {
 
+    public static final String GATEWAY_ID = "gateway";
+
     public GatewayServiceInfoCreator() {
-        super(new Tags(ServicesConfig.GATEWAY_ID));
+        super(new Tags(GATEWAY_ID));
     }
 
     @Override
@@ -33,6 +34,6 @@ public class GatewayServiceInfoCreator extends CloudFoundryServiceInfoCreator<Ga
         Map<String, Object> credentials = getCredentials(serviceData);
         String gatewayUrl = (String) credentials.get("url");
 
-        return new GatewayServiceInfo(ServicesConfig.GATEWAY_ID, gatewayUrl);
+        return new GatewayServiceInfo(GATEWAY_ID, gatewayUrl);
     }
 }

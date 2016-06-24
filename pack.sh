@@ -25,6 +25,7 @@ JAR_NAME="${PACKAGE_CATALOG}.jar"
 mvn clean package -Dmaven.test.skip=true
 
 # create tmp catalog
+rm -rf ${PACKAGE_CATALOG}
 mkdir ${PACKAGE_CATALOG}
 
 # files to package
@@ -37,9 +38,14 @@ cp --parents client/client.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents client/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents atkmodelgenerator/atk_model_generator.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents atkmodelgenerator/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
+
 cd ${BASE_DIR}
+
+# package deployment script
+rm -rf deploy/vendor
 mkdir deploy/vendor
 pip install --download deploy/vendor -r deploy/requirements.txt
+
 cp --parents deploy/deploy.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents deploy/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents deploy/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
@@ -54,6 +60,7 @@ echo "commit_sha=$(git rev-parse HEAD)" > ${PACKAGE_CATALOG}/build_info.ini
 
 # create zip package
 cd ${PACKAGE_CATALOG}
+rm -f ../${PROJECT_NAME}-${VERSION}.zip
 zip -r ../${PROJECT_NAME}-${VERSION}.zip *
 cd ..
 

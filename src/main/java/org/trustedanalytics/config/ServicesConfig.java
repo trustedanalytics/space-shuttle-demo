@@ -23,12 +23,9 @@ import org.springframework.cloud.Cloud;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.trustedanalytics.serviceinfo.GatewayServiceInfo;
 import org.trustedanalytics.serviceinfo.InfluxDbServiceInfo;
-import org.trustedanalytics.serviceinfo.MqttProperties;
-import org.trustedanalytics.serviceinfo.ZookeeperServiceInfo;
-import org.trustedanalytics.serviceinfo.MqttServiceInfo;
 import org.trustedanalytics.serviceinfo.ScoringEngineServiceInfo;
+import org.trustedanalytics.serviceinfo.ScoringEngineServiceInfoCreator;
 import org.trustedanalytics.storage.StoreProperties;
 
 @Configuration
@@ -36,26 +33,13 @@ import org.trustedanalytics.storage.StoreProperties;
 public class ServicesConfig {
 
     public static final Logger LOG = LoggerFactory.getLogger(ServicesConfig.class);
-    public static final String GATEWAY_ID = "gateway";
+
     public static final String INFLUXDB_ID = "influxdb";
-    public static final String SCORING_ENGINE_ID = "scoring-engine";
-    public static final String ZOOKEEPER_ID = "zookeeper";
-    public static final String MQTT_ID = "mosquitto14";
+
 
     @Autowired
     private Cloud cloud;
 
-    @Bean
-    public String zookeeperCluster() {
-        ZookeeperServiceInfo zookeeperServiceInfo = (ZookeeperServiceInfo) cloud.getServiceInfo(ZOOKEEPER_ID);
-        return zookeeperServiceInfo.getCluster();
-    }
-
-    @Bean
-    public String gatewayUrl() {
-        GatewayServiceInfo gatewayServiceInfo = (GatewayServiceInfo) cloud.getServiceInfo(GATEWAY_ID);
-        return gatewayServiceInfo.getUri();
-    }
 
     @Bean
     public StoreProperties storeProperties() {
@@ -64,15 +48,9 @@ public class ServicesConfig {
     }
 
     @Bean
-    public MqttProperties mqttProperties() {
-        MqttServiceInfo mqttServiceInfo = (MqttServiceInfo) cloud.getServiceInfo(MQTT_ID);
-        return mqttServiceInfo.getMqttProperties();
-    }
-
-    @Bean
     public String scoringEngineUrl() {
         ScoringEngineServiceInfo scoringEngineServiceInfo =
-                (ScoringEngineServiceInfo) cloud.getServiceInfo(SCORING_ENGINE_ID);
+                (ScoringEngineServiceInfo) cloud.getServiceInfo(ScoringEngineServiceInfoCreator.SCORING_ENGINE_ID);
         return scoringEngineServiceInfo.getUri();
     }
 }

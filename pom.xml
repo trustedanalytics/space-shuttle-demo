@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.trustedanalytics</groupId>
     <artifactId>space-shuttle-demo</artifactId>
-    <version>0.5.15</version>
+    <version>0.5.16</version>
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
@@ -50,6 +50,11 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.paho</groupId>
+            <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.6</version>
@@ -92,7 +97,7 @@
                 <version>2.6</version>
                 <configuration>
                     <header>license/license_header_2016.txt</header>
-		    <validHeaders>
+                    <validHeaders>
                         <validHeader>license/license_header_2015.txt</validHeader>
                         <validHeader>license/license_header_2016.txt</validHeader>
                     </validHeaders>
@@ -104,7 +109,7 @@
                         <include>src/main/resources/**/*.css</include>
                         <include>src/main/resources/**/*.html</include>
                         <include>license/*.sh</include>
-			<include>pack.sh</include>
+                        <include>pack.sh</include>
                     </includes>
                     <excludes>
                         <exclude>src/main/client/venv/**</exclude>
@@ -132,19 +137,34 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>copy-manifest</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <phase>package</phase>
+                        <configuration>
+                            <executable>cp</executable>
+                            <arguments>
+                                <argument>target/classes/manifest.yml</argument>
+                                <argument>manifest.yml</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-mqtt-manifest</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <executable>cp</executable>
+                            <arguments>
+                                <argument>target/classes/manifest-mqtt.yml</argument>
+                                <argument>manifest-mqtt.yml</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <executable>cp</executable>
-                    <arguments>
-                        <argument>target/classes/manifest.yml</argument>
-                        <argument>manifest.yml</argument>
-                    </arguments>
-                </configuration>
             </plugin>
         </plugins>
     </build>

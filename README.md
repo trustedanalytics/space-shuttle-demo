@@ -20,9 +20,10 @@ Sample application for ATK space shuttle demo
    
 ### Manual deployment
 1. Upload the model to HDFS: 
+   * Download already prepared model from [https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar](https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar)
    * Login to TAP console and select `Data catalog` page in the navigation panel
    * Select `Submit Transfer` tab
-   * Select input type: `Link`. Place link: [https://s3.amazonaws.com/trustedanalytics/v0.7.0/models/space-shuttle-model.tar](https://s3.amazonaws.com/trustedanalytics/v0.7.0/models/space-shuttle-model.tar)
+   * Select input type: `Local path` and choose previously downloaded model
    * Enter `Title`
    * Click `Upload` 
    
@@ -58,7 +59,7 @@ Sample application for ATK space shuttle demo
 
 ### Automated deployment
 * Switch to `deploy` directory: `cd deploy`
-* Download [the model](https://s3.amazonaws.com/trustedanalytics/v0.7.0/models/space-shuttle-model.tar) and rename it to `model.tar` 
+* Download [the model](https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar) and rename it to `model.tar` 
 * Install tox: `sudo -E pip install --upgrade tox`
 * Run: `tox`
 * Activate virtualenv with installed dependencies: `. .tox/py27/bin/activate`

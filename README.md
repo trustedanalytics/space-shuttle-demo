@@ -16,51 +16,34 @@ Sample application for ATK space shuttle demo
 1. Web application asks backend application (space-shuttle-demo) for a anomalies chart.
 2. Space-shuttle-demo gets anomalies (classes different than 1) count per minute from InfluxDB.
 
-##Preparing the Scoring Engine model
-
-#### Uploading file to hdfs
-1. Go to TAP - `Data catalog` page
-1. Select `Submit Transfer` tab
-1. Select input type: `Local path`
-1. Select file you want to upload (a sample training data can be found here: [src/main/atkmodelgenerator/train-data.csv](src/main/atkmodelgenerator/train-data.csv))
-1. Enter `Title`
-1. Click `Upload` 
-
-When upload will be completed, you could go to page `Data sets`.
-Then select your data set.
-Here field `targetUri` contain path to submitted file on hdfs.
-
-#### Creating TAP Analytics Toolkit model
-Atk model is necessary to create instance of [Scoring Engine](#scoring-engine)
-Go to `src/main/atkmodelgenerator` and run `python atk_model_generator.py hdfs://path_to_training_data`
-You can use example training data set from `src/main/client/shuttle_scale_cut_val.csv`
-You need to put this training data set on hdfs. Look at [putting file on hdfs](#uploading-file-to-hdfs)
-To run script correctly need to use `python 2.7` and install python package: `pip install trustedanalytics`
-You will need to enter Atk server url and credentials
-Result of this operation is url to Atk model on hdfs
-
-#### Scoring Engine
-To create Scoring Engine instance you will need [Atk model](#creating-atk-model).
-When you have the model prepared, you can create a new instance of Scoring Engine from Marketplace:
-1. Go to page `Marketplace`
-1. Select `TAP Scoring Engine` service offering
-1. Type name `space-shuttle-scoring-engine`
-1. Click `+ Add an extra parameter` and add Atk model url:
-  key: `TAR_ARCHIVE`
-  value: `hdfs://path_to_model`
-1. Click `Create new instance`
-
-Note: The TAR_ARCHIVE value (`hdfs://path_to_model`) is the result of [Creating Atk model](#creating-atk-model)
-
 ## Deploying application to TAP
 
 ### Manual deployment
-
-1. Create required service instances (if they do not exist already). Application will connect to these service instances using Spring Cloud Connectors. Note: If you use the recommended names of the required service instances they will be bound automatically with the application when it is pushed to Cloud Foundry. Otherwise, service instances names will need to be adjusted in `manifest.yml` file or removed from `manifest.yml` and bound manually after application is pushed to Cloud Foundry.
+1. Upload the model to HDFS: 
+   * Download already prepared model from [https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar](https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar)
+   * Login to TAP console and select `Data catalog` page in the navigation panel
+   * Select `Submit Transfer` tab
+   * Select input type: `Local path` and choose previously downloaded model
+   * Enter `Title`
+   * Click `Upload` 
+   
+   Alternatively, you can create TAP Analytics Toolkit model by yourself. Please refer to the [instructions](#creating-tap-analytics-toolkit-model).
+   
+1. Create required service instances (if they do not exist already). 
+   Application will connect to these service instances using Spring Cloud Connectors. Note: If you use the recommended names of the required service instances they will be bound automatically with the application when it is pushed to Cloud Foundry. Otherwise, service instances names will need to be adjusted in `manifest.yml` file or removed from `manifest.yml` and bound manually after application is pushed to Cloud Foundry.
     1. Instance of InfluxDB (recommended name: `space-shuttle-db`)
     1. Instance of Zookeeper (recommended name: `zookeeper`)
     1. Instance of Gateway called (recommended name: `space-shuttle-gateway`)
-    1. Instance of Scoring Engine with recommended name: `space-shuttle-scoring-engine` (created in [Scoring Engine](#scoring-engine) paragraph)
+    1. Instance of Scoring Engine with recommended name: `space-shuttle-scoring-engine`. Instructions below describe how to create the Scoring Engine service instance.
+
+   To create Scoring Engine service instance take the following actions:
+     * Select `Marketplace` tab in TAP Console navigation panel
+     * Select `TAP Scoring Engine` service offering
+     * Type name `space-shuttle-scoring-engine`
+     * Click `+ Add an extra parameter` and add TAP Analytics Toolkit model url:
+        key: `uri`
+        value: `hdfs://path_to_model`
+     * Click `Create new instance`
 
 1. Create Java package:
   ```
@@ -76,6 +59,7 @@ Note: The TAR_ARCHIVE value (`hdfs://path_to_model`) is the result of [Creating 
 
 ### Automated deployment
 * Switch to `deploy` directory: `cd deploy`
+* Download [the model](https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar) and rename it to `model.tar` 
 * Install tox: `sudo -E pip install --upgrade tox`
 * Run: `tox`
 * Activate virtualenv with installed dependencies: `. .tox/py27/bin/activate`
@@ -105,34 +89,35 @@ To determine URL of the gateway you are going to send data to:
 2. Run client.py: 
   ```python client.py wss://<gateway_url>/ws shuttle_scale_cut_val.csv```
 
-## Local development
-#### InfluxDB
-  To launch space-shuttle demo application it's best to install and run the InfluxDB locally. Instructions how to do it can be found here: http://influxdb.com/docs/v0.8/introduction/installation.html
-  
-  For Debian/Ubuntu 64bit based systems:
-  ```
-  wget http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb
-  sudo dpkg -i influxdb_latest_amd64.deb
-  sudo /etc/init.d/influxdb start
-  ```         
-  Configuration file is located at /opt/influxdb/shared/config.toml or /usr/local/etc/influxdb.conf
-  There you can check or change ports used by InfluxFB. By default there will be 8083, 8086, 8090, and 8099.
-  
-  Space-shuttle app will by default try to connect to influx on localhost:8086. If you have changed that port, you can tell the application to connect to a different port by setting an environment variable:
-  ```
-  export SERVICES_STORE_APIPORT=<port>
-  ```
-  
-  To access web-based admin panel, open your browser and navigate to: ```localhost:8083```.
+##Creating TAP Analytics Toolkit model
+To create the model for Scoring Engine take the following actions: 
 
+#### Upload training data set to HDFS
+   * Login to TAP console and select `Data catalog` page in the navigation panel
+   * Select `Submit Transfer` tab
+   * Select input type: `Local path`
+   * Select sample training data file which can be found here: [src/main/atkmodelgenerator/train-data.csv](src/main/atkmodelgenerator/train-data.csv))
+   * Enter `Title`
+   * Click `Upload` 
 
-#### Running:
+When upload is completed, click `Data sets` tab and view the details of uploaded data set by clicking its name.
+Copy the value of `targetUri` which contains path to the uploaded data set in HDFS - you will need this to create TAP Analytics Toolkit model in Jupyter notebook.
 
-To run the application locally type:
-```mvn spring-boot:run```
+#### Create TAP Analytics Toolkit instance
+   * In TAP console select `Data Science` and then `TAP Analytics Toolkit` tab
+   * If there is an instance of `TAP Analytics Toolkit` installed you will see it in an instances list - no action needed. If there are no instances you will be asked if you want to create one - select `Yes`, wait until the application is created (it can take about a minute or two). The application will appear in `TAP Analytics Toolkit` instances list
 
+#### Create Jupyter instance
+   * In `Data Science` tab select `Jupyter`. Create new `Jupyter` instance.
+   * Copy the password for created Jupyter instance.
+   * Login to Jupyter by clicking `App Url` link. 
 
+#### Install TAP Analytics Toolkit client
+   * Create new notebook
+   * Install TAP Analytics Toolkit client in your notebook by executing command: `!pip install <link-to-atk-server>/client`. `<link-to-atk-server>` can be copied from URL column in `TAP Analytics Toolkit` instances list.
 
-
-
-
+#### Connect to TAP Analytics Toolkit server and run model generation script
+   * Copy the contents from [src/main/atkmodelgenerator/atk_model_generator.py](src/main/atkmodelgenerator/atk_model_generator.py) into your notebook. 
+   * After imports section set the URI to TAP Analytics Toolkit server: `ta.server.uri = <link-to-atk-server>`
+   * Set the value of `ds` as the link to the data set previously uploaded to HDFS (`targetUri`).
+   * Run the script. The link to the created model in HDFS will be printed in the output.

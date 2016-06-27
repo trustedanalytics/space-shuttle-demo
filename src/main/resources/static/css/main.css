@@ -216,3 +216,26 @@ h1 {
     width: 100%;
     font-size: 18px;
 }
+
+.read-more {
+    line-height: normal;
+    text-align: center;
+    position: absolute;
+    right: 15px;
+    bottom: 10px;
+    font-size: 15px;
+}
+
+.read-more a {
+    color: #ffffff;
+}
+
+.read-more a:hover {
+    text-decoration: underline;
+}
+
+.read-more i.fa {
+    vertical-align: middle;
+    margin-left: 5px;
+    font-size: 14px;
+}

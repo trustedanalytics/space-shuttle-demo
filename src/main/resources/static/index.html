@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.4.0/css/ngDialog.min.css">
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.4.0/css/ngDialog-theme-default.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
 
     <!-- amCharts javascript code -->
@@ -63,6 +64,11 @@
     <div></div>
     <div id="chartdiv" ng-class="{ hidden: !chart.dataProvider.length }" ng-click="onClick()"></div>
     <div ng-show="!chart.dataProvider.length" class="no-data-message">No data available within the specified timeframe</div>
+    <div class="read-more">
+        <a href="https://github.com/trustedanalytics/space-shuttle-demo" target="_blank">
+            Read more on Github<i class="fa fa-external-link"></i>
+        </a>
+    </div>
 
     <script type="text/ng-template" id="samplesPopup">
         <h1>Anomalies within the selected timeframe</h1>

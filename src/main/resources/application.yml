@@ -3,3 +3,15 @@ consumer.group: ScoringGroup
 logging:
   level:
     org.trustedanalytics: DEBUG
+
+store:
+    hostname: ${influx.hostname:localhost}
+    port: ${influx.port:1883}
+    username: ${influx.username:root}
+    password: ${influx.password:root}
+    databaseName: space-shuttle-demo
+    defaultGroupingInterval: 1m
+    defaultTimeLimit: 1h
+
+scoringengine:
+    url: ${se.url}

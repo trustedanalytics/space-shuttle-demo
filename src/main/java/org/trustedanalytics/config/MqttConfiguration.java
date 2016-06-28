@@ -22,13 +22,12 @@ import org.springframework.cloud.Cloud;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.trustedanalytics.DataProviders.MqttDataProvider;
-import org.trustedanalytics.DataProviders.OnMqttMessageArrived;
+import org.trustedanalytics.dataproviders.MqttDataProvider;
+import org.trustedanalytics.dataproviders.OnMqttMessageArrived;
 import org.trustedanalytics.process.DataConsumer;
 import org.trustedanalytics.serviceinfo.MqttProperties;
 import org.trustedanalytics.serviceinfo.MqttServiceInfo;
 import org.trustedanalytics.serviceinfo.MqttServiceInfoCreator;
-import org.trustedanalytics.storage.DataStore;
 
 @Configuration
 @Profile("mqtt")
@@ -41,7 +40,7 @@ public class MqttConfiguration {
 
 
     @Bean(initMethod = "init")
-    public MqttDataProvider mqttDataProvider(DataStore store, DataConsumer dataConsumer) {
+    public MqttDataProvider mqttDataProvider(DataConsumer dataConsumer) {
         LOG.debug("Mqtt properties: " + mqttProperties());
         return new MqttDataProvider(mqttProperties(), new OnMqttMessageArrived(dataConsumer));
     }

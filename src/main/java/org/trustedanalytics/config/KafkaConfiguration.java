@@ -31,7 +31,7 @@ import org.springframework.cloud.Cloud;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.trustedanalytics.DataProviders.KafkaDataProvider;
+import org.trustedanalytics.dataproviders.KafkaDataProvider;
 import org.trustedanalytics.process.DataConsumer;
 import org.trustedanalytics.process.FeatureVectorDecoder;
 import org.trustedanalytics.serviceinfo.GatewayServiceInfo;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.trustedanalytics.DataProviders;
+package org.trustedanalytics.dataproviders;
 
 import kafka.consumer.KafkaStream;
 import org.slf4j.Logger;

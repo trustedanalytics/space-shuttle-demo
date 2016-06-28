@@ -16,13 +16,10 @@
 
 package org.trustedanalytics.serviceinfo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.service.BaseServiceInfo;
 
 public class ZookeeperServiceInfo extends BaseServiceInfo {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperServiceInfo.class);
     private String cluster;
 
     public ZookeeperServiceInfo(String id, String cluster) {

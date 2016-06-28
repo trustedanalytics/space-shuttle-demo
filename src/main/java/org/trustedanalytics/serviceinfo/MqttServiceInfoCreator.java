@@ -15,8 +15,6 @@
  */
 package org.trustedanalytics.serviceinfo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.cloudfoundry.CloudFoundryServiceInfoCreator;
 import org.springframework.cloud.cloudfoundry.Tags;
 
@@ -24,7 +22,6 @@ import java.util.Map;
 
 public class MqttServiceInfoCreator extends CloudFoundryServiceInfoCreator<MqttServiceInfo> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MqttServiceInfoCreator.class);
     public static final String MQTT_ID = "mosquitto14";
 
     public MqttServiceInfoCreator() {

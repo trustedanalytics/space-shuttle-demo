@@ -16,21 +16,18 @@
 
 package org.trustedanalytics.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.trustedanalytics.DataProviders.RandomDataProvider;
+import org.trustedanalytics.dataproviders.RandomDataProvider;
+import org.trustedanalytics.process.DataConsumer;
 
 @Configuration
 @Profile("random")
 public class RandomConfiguration {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RandomConfiguration.class);
-
     @Bean(initMethod = "init")
-    public RandomDataProvider randomDataProvider() {
-        return new RandomDataProvider();
+    public RandomDataProvider randomDataProvider(DataConsumer dataConsumer) {
+        return new RandomDataProvider(dataConsumer);
     }
 }

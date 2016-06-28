@@ -2,7 +2,7 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/5723704eba37ce00464e061c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5723704eba37ce00464e061c)
 
 # space-shuttle-demo
-Sample application for ATK space shuttle demo
+Sample application for ATK space shuttle demo. The default version of that application uses gateway and kafka as a streaming source. If you want to use a mqtt instead look [here](mqtt/README.md)
 
 ## Overview
 ![](wikiimages/space_shuttle_demo.png)
@@ -121,3 +121,27 @@ Copy the value of `targetUri` which contains path to the uploaded data set in HD
    * After imports section set the URI to TAP Analytics Toolkit server: `ta.server.uri = <link-to-atk-server>`
    * Set the value of `ds` as the link to the data set previously uploaded to HDFS (`targetUri`).
    * Run the script. The link to the created model in HDFS will be printed in the output.
+
+## Local development
+   * The application can be run in three different configurations depending on chosen data provider (streaming source).
+   * There is one special Spring `@Profile` (local) which was created to enable local development
+   * cloud, kafka and mqtt profiles should be inactive while local development
+   * random profile should be active instead while local development. It uses a simple random number generator instead of streaming source like kafka or mqtt
+   * **Note**: Streaming data here are random numbers so it generates a lof of anomalies
+
+### Local Configuration
+#### Prerequisites
+##### InfluxDB
+   * You can find instruction how to install and run InfluxDB here: http://influxdb.com/docs/v0.8/introduction/installation.html
+   * The easiest way is to run it in into docker container `docker run -d -p 8083:8083 -p 8086:8086 tutum/influxdb:0.8.8`
+   * **Note**: `influxdb:0.9` is **NOT** backwards compatible with `0.8.x.`
+   
+##### Scoring Engine  
+Instruction on how to push scoring engine on the platform: [instruction](#manual-deployment)
+  
+#### Run
+   * 1. Make sure that both local and random profiles are active
+   * 2. `export SE_URL <scoring engine URL>` **NOTE:** link should not contain `http://` protocol
+   * 3. `mvn spring-boot:run`
+   * 4. In a web browser enter `localhost:8080`
+

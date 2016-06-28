@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package org.trustedanalytics.DataProviders;
+package org.trustedanalytics.dataproviders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.process.DataConsumer;
 
@@ -27,16 +26,18 @@ import java.util.Random;
 @Profile("random")
 public class RandomDataProvider {
     private static final Logger LOG = LoggerFactory.getLogger(RandomDataProvider.class);
+    private final DataConsumer dataConsumer;
     private Random randomGenerator = new Random();
 
-    @Autowired
-    DataConsumer dataConsumer;
+    public RandomDataProvider(DataConsumer dataConsumer) {
+        this.dataConsumer = dataConsumer;
+    }
 
     public float[] generateRandomFloatArray() {
         float[] randomArray = new float[10];
-        randomArray[0] = randomGenerator.nextInt(5) + 1;
+        randomArray[0] = randomGenerator.nextInt(5) + 1f;
         for (int i = 1; i < 10; i++) {
-            randomArray[i] = randomGenerator.nextFloat() * 100;
+            randomArray[i] = randomGenerator.nextFloat();
         }
         return randomArray;
     }
@@ -49,7 +50,8 @@ public class RandomDataProvider {
                     Thread.sleep(1000);
                     dataConsumer.processMessage(generateRandomFloatArray());
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    LOG.error(e.getMessage(), e);
+                    Thread.currentThread().interrupt();
                 }
             }
         }).start();

@@ -53,7 +53,7 @@ def sendData(ws):
         for line in data:
             print "send: " + line
             ws.send("[" + line + "]")
-            time.sleep(3)
+            time.sleep(0.1)
 
 
 def get_proxy(http_proxy):

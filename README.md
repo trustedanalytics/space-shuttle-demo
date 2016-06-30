@@ -32,7 +32,7 @@ Sample application for ATK space shuttle demo. The default version of that appli
 1. Create required service instances (if they do not exist already). 
    Application will connect to these service instances using Spring Cloud Connectors. Note: If you use the recommended names of the required service instances they will be bound automatically with the application when it is pushed to Cloud Foundry. Otherwise, service instances names will need to be adjusted in `manifest.yml` file or removed from `manifest.yml` and bound manually after application is pushed to Cloud Foundry.
     1. Instance of InfluxDB (recommended name: `space-shuttle-db`)
-    1. Instance of Zookeeper (recommended name: `zookeeper`)
+    1. Instance of Zookeeper (recommended name: `space-shuttle-zookeeper`)
     1. Instance of Gateway called (recommended name: `space-shuttle-gateway`)
     1. Instance of Scoring Engine with recommended name: `space-shuttle-scoring-engine`. Instructions below describe how to create the Scoring Engine service instance.
 

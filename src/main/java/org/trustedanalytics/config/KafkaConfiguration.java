@@ -23,8 +23,6 @@ import kafka.consumer.KafkaStream;
 import kafka.javaapi.consumer.ConsumerConnector;
 import kafka.serializer.StringDecoder;
 import kafka.utils.VerifiableProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.Cloud;
@@ -48,19 +46,17 @@ import java.util.Properties;
 @Profile("kafka")
 public class KafkaConfiguration {
 
-    private static final Logger LOG = LoggerFactory.getLogger(KafkaConfiguration.class);
-
     @Autowired
     private Cloud cloud;
 
     @Value("${consumer.group}")
     private String consumerGroup;
 
-
     @Bean
     protected KafkaStream<String, float[]> kafkaStream() {
 
         final String topicName = retrieveTopicNameFromGatewayAddress(gatewayUrl());
+
         ConsumerConnector consumerConnector =
                 Consumer.createJavaConsumerConnector(consumerConfig());
         Map<String, Integer> topicCounts = new HashMap<>();
@@ -70,7 +66,6 @@ public class KafkaConfiguration {
         FeatureVectorDecoder valueDecoder = new FeatureVectorDecoder();
         Map<String, List<KafkaStream<String, float[]>>> streams =
                 consumerConnector.createMessageStreams(topicCounts, keyDecoder, valueDecoder);
-
         List<KafkaStream<String, float[]>> streamsByTopic = streams.get(topicName);
         Preconditions.checkNotNull(streamsByTopic, String.format("Topic %s not found in streams map.", topicName));
         Preconditions.checkElementIndex(0, streamsByTopic.size(),

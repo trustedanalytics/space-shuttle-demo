@@ -15,6 +15,7 @@
  */
 package org.trustedanalytics.serviceinfo;
 
+import com.google.common.base.Preconditions;
 import lombok.Data;
 
 import java.util.Map;
@@ -38,10 +39,11 @@ public class MqttProperties {
     }
 
     public MqttProperties(Map<String, Object> serviceCredentials, String clientName, String topic) {
-        this.hostname = URI_SCHEME + (String) serviceCredentials.get("hostname");
-        this.port = (String) ((Map<String, Object>)serviceCredentials.get("ports")).get("1883/tcp");
-        this.username = (String) serviceCredentials.get("username");
-        this.password = (String) serviceCredentials.get("password");
+        Map<String, Object> mqttServicePorts = (Map<String, Object>)Preconditions.checkNotNull(serviceCredentials.get("ports"), "serviceCredentials: ports not found.");
+        this.port = (String) Preconditions.checkNotNull(mqttServicePorts.get("1883/tcp"), "serviceCredentials: port 1883/tcp not found");
+        this.hostname = URI_SCHEME + (String) Preconditions.checkNotNull(serviceCredentials.get("hostname"), "serviceCredentials: hostname not found");
+        this.username = (String) Preconditions.checkNotNull(serviceCredentials.get("username"), "serviceCredentials: username not found");
+        this.password = (String) Preconditions.checkNotNull(serviceCredentials.get("password"), "serviceCredentials: password not found");
         this.clientName = clientName;
         this.topic = topic;
     }

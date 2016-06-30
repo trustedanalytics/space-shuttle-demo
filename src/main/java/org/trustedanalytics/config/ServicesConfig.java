@@ -16,8 +16,6 @@
 
 package org.trustedanalytics.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.Cloud;
 import org.springframework.context.annotation.Bean;
@@ -32,15 +30,11 @@ import org.trustedanalytics.storage.StoreProperties;
 @Profile("cloud")
 public class ServicesConfig {
 
-    public static final Logger LOG = LoggerFactory.getLogger(ServicesConfig.class);
-
     public static final String INFLUXDB_ID = "influxdb";
-
 
     @Autowired
     private Cloud cloud;
-
-
+    
     @Bean
     public StoreProperties storeProperties() {
         InfluxDbServiceInfo influxDbServiceInfo = (InfluxDbServiceInfo) cloud.getServiceInfo(INFLUXDB_ID);

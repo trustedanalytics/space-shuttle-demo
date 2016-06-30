@@ -19,6 +19,7 @@ import org.springframework.cloud.cloudfoundry.CloudFoundryServiceInfoCreator;
 import org.springframework.cloud.cloudfoundry.Tags;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class MqttServiceInfoCreator extends CloudFoundryServiceInfoCreator<MqttServiceInfo> {
 
@@ -30,8 +31,11 @@ public class MqttServiceInfoCreator extends CloudFoundryServiceInfoCreator<MqttS
 
     @Override
     public boolean accept(Map<String, Object> serviceData) {
-        String label = (String) serviceData.get("label");
-        return label.equals(MQTT_ID);
+        Optional<String> label = Optional.ofNullable((String)serviceData.get("label"));
+        if(label.isPresent()){
+            return label.get().equals(MQTT_ID);
+        }
+        return false;
     }
 
     @Override

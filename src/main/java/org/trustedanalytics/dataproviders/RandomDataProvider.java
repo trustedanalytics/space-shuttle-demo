@@ -21,13 +21,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.process.DataConsumer;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 @Profile("random")
 public class RandomDataProvider {
     private static final Logger LOG = LoggerFactory.getLogger(RandomDataProvider.class);
     private final DataConsumer dataConsumer;
-    private Random randomGenerator = new Random();
+    private SecureRandom randomGenerator = new SecureRandom();
 
     public RandomDataProvider(DataConsumer dataConsumer) {
         this.dataConsumer = dataConsumer;

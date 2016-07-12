@@ -33,19 +33,20 @@ cp manifest.yml ${PACKAGE_CATALOG}
 cp --parents target/${JAR_NAME} ${PACKAGE_CATALOG}
 
 BASE_DIR=`pwd`
-cd src/main
-cp --parents client/client.py ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/space_shuttle_client.py ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/client_config.py ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/manifest.yml ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents client/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents atkmodelgenerator/atk_model_generator.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents atkmodelgenerator/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
-
-cd ${BASE_DIR}
 
 # package deployment script
 rm -rf deploy/vendor
 mkdir deploy/vendor
 pip install --download deploy/vendor -r deploy/requirements.txt
-pip install --download deploy/vendor -r src/main/client/requirements.txt
+pip install --download deploy/vendor -r client/requirements.txt
 
 cp --parents deploy/deploy.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents deploy/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}

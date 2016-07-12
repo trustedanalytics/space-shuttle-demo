@@ -20,6 +20,7 @@ This scripts automates deployment of space-shuttle-demo application
 application to Cloud Foundry using manifest file).
 """
 
+import os
 import json
 import logging
 
@@ -67,7 +68,7 @@ if not ARGS.no_build:
 LOGGER.info('Pushing application to Cloud Foundry...')
 cf_helpers.push(work_dir=PROJECT_DIR, options=ARGS.app_name)
 
-CLIENT_DIR = PROJECT_DIR + "/src/main/client"
+CLIENT_DIR = os.path.join(PROJECT_DIR, 'client')
 
 LOGGER.info('Pushing application client to Cloud Foundry...')
 cf_helpers.push(work_dir=CLIENT_DIR)

@@ -67,13 +67,21 @@ Sample application for ATK space shuttle demo. The default version of that appli
 
 ## Sending data to Kafka
 
-To send data to kafka through a gateway you can use python script `client.py` located in the repository
+To send data to kafka through a gateway you can either push space_shuttle_client from client directory to space with existing gateway instance or use python `space_shuttle_client.py` locally passing gateway url as a parameter.
+
+### Running on Cloud Foundry:
+
+1. Login to space containing `space-shuttle-gateway`.
+2. Go to: `client/`
+3. Push app to Cloud Foundry using `cf push`.
+<br /> _**Note**: in case of name conflict during push add name parameter `cf push <custom_name>`_
+
+### Local configuration:
 
 #### Prerequisites:
 
 1. Python 2.7
-2. Websocket-client library
-  ```pip install websocket-client```
+2. tox ([installation details](http://tox.readthedocs.io/en/latest/install.html))
 
 #### Gateway URL
 
@@ -83,11 +91,12 @@ To determine URL of the gateway you are going to send data to:
 2. Search for `space-shuttle-gateway`
 3. Copy the application URL
    
-#### Running python client:
+#### Running python client locally:
 
-1. Go to: `src/main/client` 
-2. Run client.py: 
-  ```python client.py wss://<gateway_url>/ws shuttle_scale_cut_val.csv```
+1. Go to: `client/` 
+2. Run tox: `tox`
+3. Activate created virtualenv: `. .tox/py27/bin/activate` 
+4. Run: `python space_shuttle_client.py --gateway-url <gateway_url>`
 
 ##Creating TAP Analytics Toolkit model
 To create the model for Scoring Engine take the following actions: 

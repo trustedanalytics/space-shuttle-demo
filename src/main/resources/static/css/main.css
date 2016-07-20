@@ -78,25 +78,11 @@ h1 {
     margin: 0;
 }
 
-#chartdiv {
-    position: absolute;
-    top: 100px;
-    bottom: 30px;
-    left: 20px;
-    right: 20px;
-}
-
 .timeframe {
     font-size: 12px;
     position: absolute;
     top: 20px;
     right: 20px;
-}
-
-.no-data-message {
-    text-align: center;
-    font-size: 12px;
-    padding-top: 50px;
 }
 
 .samples {
@@ -184,7 +170,7 @@ h1 {
     position: relative;
 }
 
-.samples > .histograms > div > div > div {
+.samples > .histograms > div > div > nvd3 {
     width: 100%;
     height: 100%;
 }
@@ -197,6 +183,11 @@ h1 {
     left: 0;
     right: 0;
     text-align: center;
+}
+
+.samples > h3 {
+    text-align: center;
+    padding: 40px 0;
 }
 
 .ngdialog.ngdialog-theme-default {
@@ -238,4 +229,22 @@ h1 {
     vertical-align: middle;
     margin-left: 5px;
     font-size: 14px;
+}
+
+svg {
+    height: 80% !important;
+    padding: 35px 0;
+    position: absolute;
+}
+
+svg > .nv-stackedAreaChart {
+    left: -20px !important;
+}
+
+svg text {
+    fill: white;
+}
+
+.tick line {
+    opacity: 0.4;
 }

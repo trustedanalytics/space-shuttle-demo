@@ -19,24 +19,22 @@
 <html ng-app="app">
 <head>
     <title>Intel - Space shuttle demo</title>
-
-    <!-- amCharts javascript sources -->
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/amcharts/3.13.0/amcharts.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/amcharts/3.13.0/serial.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/amcharts/3.13.0/themes/black.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.4.0/js/ngDialog.js"></script>
-
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.4.0/css/ngDialog.min.css">
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.4.0/css/ngDialog-theme-default.min.css">
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.2/nv.d3.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/main.css">
 
-    <!-- amCharts javascript code -->
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/samples-controller.js"></script>
-    <script type="text/javascript" src="js/chart.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.4.0/js/ngDialog.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.2/nv.d3.min.js"></script>
+    <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.6/dist/angular-nvd3.js"></script>
+
+    <script type="text/javascript" src="javascript/app.js"></script>
+    <script type="text/javascript" src="javascript/DataProvider.js"></script>
+    <script type="text/javascript" src="javascript/SamplesPopupController.js"></script>
 
 </head>
 <body ng-controller="MainController">
@@ -61,9 +59,9 @@
             1 hour
         </label>
     </div>
-    <div></div>
-    <div id="chartdiv" ng-class="{ hidden: !chart.dataProvider.length }" ng-click="onClick()"></div>
-    <div ng-show="!chart.dataProvider.length" class="no-data-message">No data available within the specified timeframe</div>
+
+    <nvd3 options="options" data="series" api="chartApi" on-ready="readyCallback"></nvd3>
+
     <div class="read-more">
         <a href="https://github.com/trustedanalytics/space-shuttle-demo" target="_blank">
             Read more on Github<i class="fa fa-external-link"></i>
@@ -73,19 +71,19 @@
     <script type="text/ng-template" id="samplesPopup">
         <h1>Anomalies within the selected timeframe</h1>
         <div class="samples">
-            <div ng-show="!samples && !dataLoaded" class="info-message">
-                Loading data...
+            <div ng-show="!samples" class="info-message">
+                Loading data..
             </div>
-            <div ng-show="!samples && dataLoaded" class="info-message">
+            <div ng-show="!samples" class="info-message">
                 No data found within the specified timeframe
             </div>
-            <div ng-show="samples && dataLoaded" class="list">
+            <div ng-show="samples" class="list">
                 <div ng-repeat="sampleGroup in samples">
                     <div class="category-name">{{ sampleGroup[0].class }}: {{ getCategory(sampleGroup[0].class) }}</div>
                     <ul>
                         <li>
                             <a ng-repeat="sample in sampleGroup" ng-click="selectSample(sample)" ng-class="{ 'active': sample === selectedSample }">
-                                {{ sample.time | date:'medium' }}
+                                {{ sample.timestamp | date:'medium' }}
                             </a>
                         </li>
                     </ul>
@@ -94,51 +92,51 @@
             <div class="sample-details" ng-show="selectedSample">Sample values:
                 <span ng-repeat="v in selectedSample.features">{{ v | number:3 }}</span>
             </div>
-            <div ng-class="{ hidden: !samples }" class="histograms">
+            <div ng-if="histogramLoaded" ng-class="{ hidden: !samples }" class="histograms">
                 <div>
                     <div>
                         <p>Feature #1</p>
-                        <div id="histogram-1"></div>
+                        <nvd3 options="options" data="values[0]" api="chartApi"></nvd3>
                     </div>
                     <div>
                         <p>Feature #2</p>
-                        <div id="histogram-2"></div>
+                        <nvd3 options="options" data="values[1]"></nvd3>
                     </div>
                     <div>
                         <p>Feature #3</p>
-                        <div id="histogram-3"></div>
+                        <nvd3 options="options" data="values[2]"></nvd3>
                     </div>
                 </div>
                 <div>
                     <div>
                         <p>Feature #4</p>
-                        <div id="histogram-4"></div>
+                        <nvd3 options="options" data="values[3]"></nvd3>
                     </div>
                     <div>
                         <p>Feature #5</p>
-                        <div id="histogram-5"></div>
+                        <nvd3 options="options" data="values[4]"></nvd3>
                     </div>
                     <div>
                         <p>Feature #6</p>
-                        <div id="histogram-6"></div>
+                        <nvd3 options="options" data="values[5]"></nvd3>
                     </div>
                 </div>
                 <div>
                     <div>
                         <p>Feature #7</p>
-                        <div id="histogram-7"></div>
+                        <nvd3 options="options" data="values[6]"></nvd3>
                     </div>
                     <div>
                         <p>Feature #8</p>
-                        <div id="histogram-8"></div>
+                        <nvd3 options="options" data="values[7]"></nvd3>
                     </div>
                     <div>
                         <p>Feature #9</p>
-                        <div id="histogram-9"></div>
+                        <nvd3 options="options" data="values[8]"></nvd3>
                     </div>
                 </div>
             </div>
-
+            <h3 class="" ng-show="!histogramLoaded">Loading...</h3>
         </div>
     </script>
 </body>

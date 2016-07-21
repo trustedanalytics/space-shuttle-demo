@@ -231,20 +231,35 @@ h1 {
     font-size: 14px;
 }
 
-svg {
-    height: 80% !important;
-    padding: 35px 0;
+nvd3 {
     position: absolute;
+    left: 0;
+    right: 0;
+    top: 100px;
+    bottom: 10px;
 }
 
-svg > .nv-stackedAreaChart {
-    left: -20px !important;
+svg {
+    height: 100%;
 }
 
 svg text {
     fill: white;
+    fill-opacity: 0.9;
+}
+
+g.tick line {
+    stroke-dasharray: 1, 2;
 }
 
 .tick line {
     opacity: 0.4;
+}
+
+.nvd3.nv-stackedarea path.nv-area {
+    fill-opacity: 0.4;
+}
+
+.nvd3.nv-stackedarea path.nv-area.hover {
+    fill-opacity: 0.5;
 }

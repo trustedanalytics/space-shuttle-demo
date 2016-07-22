@@ -21,4 +21,18 @@ echo "Enter username:"
 read USER
 echo "Enter password:"
 read -s PASS
-while read p; echo  "$p"; mosquitto_pub -d -t ${TOPIC} -m "$p" -u ${USER} -P ${PASS} -h ${HOST} -p ${PORT}; do sleep 1; done < shuttle_scale_cut_val.csv
+
+I=0
+function read_lines() {
+   LINES=$(tail -n +$1 shuttle_scale_cut_val.csv | head -n 10)
+   echo "$LINES"
+   if [[ -z $LINES ]]; then
+      return 1
+   fi
+}
+
+while LINES=`read_lines $I`; do
+    echo "$LINES" | mosquitto_pub -d -t ${TOPIC} -l -u ${USER} -P ${PASS} -h ${HOST} -p ${PORT}
+    I=$((I+10))
+    sleep 1
+done

@@ -41,4 +41,4 @@ index.html
 
 # pack.sh output
 space-shuttle-demo-*.zip
-/src/app-deployment-helpers
+/src/app-deployment-lib

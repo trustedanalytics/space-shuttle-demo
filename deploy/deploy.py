@@ -24,8 +24,8 @@ import os
 import json
 import logging
 
-from app_deployment_helpers import cf_cli
-from app_deployment_helpers import cf_helpers
+from app_deployment_lib import cf_cli
+from app_deployment_lib import cf_helpers
 
 logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)

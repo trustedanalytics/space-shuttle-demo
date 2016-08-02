@@ -155,7 +155,7 @@ h1 {
     height: 100%;
     display: table;
     table-layout: fixed;
-    padding-top: 30px;
+    padding-top: 60px;
 }
 
 .samples > .histograms > div {
@@ -176,12 +176,12 @@ h1 {
 }
 
 .samples > .histograms > div > div > p {
-    margin: 0;
     position: absolute;
     font-size: 12px;
     line-height: 12px;
     left: 0;
     right: 0;
+    top: -20px;
     text-align: center;
 }
 
@@ -231,7 +231,7 @@ h1 {
     font-size: 14px;
 }
 
-nvd3 {
+.main-chart {
     position: absolute;
     left: 0;
     right: 0;

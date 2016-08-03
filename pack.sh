@@ -46,12 +46,23 @@ cp --parents atkmodelgenerator/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
 rm -rf deploy/vendor
 mkdir deploy/vendor
 pip install --download deploy/vendor -r deploy/requirements.txt
-pip install --download deploy/vendor -r client/requirements.txt
 
 cp --parents deploy/deploy.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents deploy/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents deploy/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents -r deploy/vendor ${BASE_DIR}/${PACKAGE_CATALOG}
+
+# space shuttle client
+rm -rf client/vendor
+mkdir client/vendor
+pip install --download client/vendor -r client/requirements.txt
+
+cp --parents client/space_shuttle_client.py ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/client_config.py ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/shuttle_scale_cut_val.csv ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents -r client/vendor ${BASE_DIR}/${PACKAGE_CATALOG}
 
 # download scoring engine model
 wget https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar

@@ -54,7 +54,6 @@ cp --parents client/space_shuttle_client.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents client/client_config.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents client/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents client/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/runtime.txt ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents client/manifest.yml ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents client/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
 

@@ -33,20 +33,13 @@ cp manifest.yml ${PACKAGE_CATALOG}
 cp --parents target/${JAR_NAME} ${PACKAGE_CATALOG}
 
 BASE_DIR=`pwd`
-cp --parents client/space_shuttle_client.py ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/client_config.py ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/manifest.yml ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents atkmodelgenerator/atk_model_generator.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents atkmodelgenerator/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
 
 # package deployment script
 rm -rf deploy/vendor
 mkdir deploy/vendor
-pip install --download deploy/vendor -r deploy/requirements.txt
-
+pip install --exists-action=w --download deploy/vendor -r deploy/requirements.txt
 cp --parents deploy/deploy.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents deploy/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents deploy/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
@@ -55,14 +48,15 @@ cp --parents -r deploy/vendor ${BASE_DIR}/${PACKAGE_CATALOG}
 # space shuttle client
 rm -rf client/vendor
 mkdir client/vendor
-pip install --download client/vendor -r client/requirements.txt
-
+pip install --exists-action=w --download client/vendor -r client/requirements.txt --no-use-wheel
+cp --parents -r client/vendor ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents client/space_shuttle_client.py ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents client/client_config.py ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/shuttle_scale_cut_val.csv ${BASE_DIR}/${PACKAGE_CATALOG}
 cp --parents client/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents -r client/vendor ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/runtime.txt ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/manifest.yml ${BASE_DIR}/${PACKAGE_CATALOG}
+cp --parents client/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
 
 # download scoring engine model
 wget https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar

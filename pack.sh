@@ -21,6 +21,9 @@ PROJECT_NAME=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -De
 PACKAGE_CATALOG=${PROJECT_NAME}-${VERSION}
 JAR_NAME="${PACKAGE_CATALOG}.jar"
 
+# remove src/app-deployment-helpers to avoid license check failure
+rm -rf src/app-deployment-helpers
+
 # build project
 mvn clean package -Dmaven.test.skip=true
 

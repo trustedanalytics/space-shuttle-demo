@@ -22,6 +22,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.trustedanalytics.process.DataConsumer;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

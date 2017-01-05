@@ -1,1 +1,1 @@
--e git+https://github.com/trustedanalytics/app-deployment-lib.git@90d4c568e71d801eaae9acb4b2e26d08b5a9ea53#egg=app_deployment_lib
+-e git+https://github.com/trustedanalytics/app-deployment-lib.git@6f9a76c05f856ee90c9997fcdc622bde9212a217#egg=app_deployment_lib

@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class ScoringEngineServiceInfoCreator extends CloudFoundryServiceInfoCreator<ScoringEngineServiceInfo> {
 
-    public static final String SCORING_ENGINE_ID = "scoring-engine";
+    public static final String SCORING_ENGINE_ID = "scoring-engine-spark-tk";
 
     public ScoringEngineServiceInfoCreator() {
         super(new Tags(SCORING_ENGINE_ID));

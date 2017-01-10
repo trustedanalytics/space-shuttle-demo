@@ -55,14 +55,10 @@ frame.inspect()
 # In[ ]:
 
 
-m = tc.models.classification.svm.train(frame, 'label', ["feature1", "feature2", "feature3", "feature4", "feature5",
-                                                        "feature6", "feature7", "feature8", "feature9"])
+m = tc.models.classification.svm.train(frame,
+                                       ["feature1", "feature2", "feature3", "feature4", "feature5", "feature6", "feature7", "feature8", "feature9"],
+                                       label_column='label')
 
-
-
-# In[ ]:
-
-m
 
 
 # ## Export the model to MAR format, enabled the scoring engine to use it
@@ -83,7 +79,7 @@ data_catalog = DataCatalog()
 
 # In[ ]:
 
-data_catalog.add("hdfs://nameservice1/user/vcap/spacehuttleSVMmodel.mar")
+data_catalog.add("hdfs://nameservice1/user/vcap/spaceshuttleSVMmodel.mar")
 
 
 # ## "hdfsclient" gives you the capability of looking at the properties of the models created, and deletion of those models
@@ -104,6 +100,3 @@ hdfsclient.ls('/user/vcap/*.mar')
 
 
 # In[ ]:
-
-
-

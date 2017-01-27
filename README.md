@@ -2,7 +2,7 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/5723704eba37ce00464e061c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5723704eba37ce00464e061c)
 
 # space-shuttle-demo
-This page provides instructions for using the Analytics Toolkit space shuttle demo application. The default version of this application uses Gateway and Kafka as streaming sources. If you want to use a mqtt instead go [here](mqtt/README.md)
+This page provides instructions for using the Space-Shuttle demo application. The default version of this application uses Gateway and Kafka as streaming sources. If you want to use a mqtt instead go [here](mqtt/README.md)
 
 ## Overview
 ![](wikiimages/space_shuttle_demo.png)
@@ -18,17 +18,17 @@ This page provides instructions for using the Analytics Toolkit space shuttle de
 * The space-shuttle-demo application fetches anomalies (classes different than 1) several times per minute from InfluxDB and then displays them.
 
 ## Deploying application to TAP
-   
+
 ### Manual deployment
-1. Upload the model to HDFS: 
-   * Download the pre-packaged model from: [https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar](https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar)
+1. Upload the model to HDFS:
+   * Download the pre-packaged model from: [https://s3.amazonaws.com/trustedanalytics/v0.7.4/models/spaceshuttleSVMmodel.zip](https://s3.amazonaws.com/trustedanalytics/v0.7.4/models/spaceshuttleSVMmodel.zip)
    * Login to the TAP console and navigate to  **Data catalog > Submit Transfer**.
    * Select input type: **Local path** and choose the previously downloaded model.
    * Enter a title in the **Title** field.
-   * Click the **Upload** button. 
-   
-   Alternatively, you can create the TAP Analytics Toolkit model yourself. Refer to the [instructions](#creating-tap-analytics-toolkit-model) later on this page.
-   
+   * Click the **Upload** button.
+
+   Alternatively, you can create the Spark-tk model yourself. Refer to the [instructions](#creating-spark-tk-model) later on this page.
+
 1. Create the required service instances (if they do *not* exist already). The application will connect to these service instances using Spring Cloud Connectors. **Note:** If you use the recommended names for the required service instances, they will be bound automatically with the application when it is pushed to Cloud Foundry. Otherwise, service instance names will need to be either (1) adjusted in the 'manifest.yml' file or (2) removed from 'manifest.yml' and bound manually after the application is pushed to Cloud Foundry.
     * Instance of InfluxDB (recommended name: ‘space-shuttle-db’).
     * Instance of Zookeeper (recommended name: ‘space-shuttle-zookeeper’).
@@ -36,9 +36,9 @@ This page provides instructions for using the Analytics Toolkit space shuttle de
     * Instance of Scoring Engine with recommended name: ‘space-shuttle-scoring-engine’. The next step provides instructions to create the Scoring Engine service instance.
 
     To create the Scoring Engine service instance:
-    * From the TAP console, navigate to **Services > Marketplace**. Select the “TAP Scoring Engine” service.
+    * From the TAP console, navigate to **Services > Marketplace**. Select the “Scoring Engine for Spark-tk” service.
     * Type the name ‘space-shuttle-scoring-engine’
-    * Click **+ Add an extra parameter** and add the TAP Analytics Toolkit model url: ‘key: uri value: hdfs://path_to_model'.
+    * Click **+ Add an extra parameter** and add the uploaded model url: ‘key: uri value: hdfs://path_to_model'.
     * Click the **Create new instance** button.
 
 1. Create a Java package:
@@ -52,7 +52,7 @@ This page provides instructions for using the Analytics Toolkit space shuttle de
 
 ### Automated deployment
 1. Switch to the ‘deploy’ directory using: ‘cd deploy’
-1. Download [the model](https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar) and rename it to ‘model.tar’.
+1. Download [the model](https://s3.amazonaws.com/trustedanalytics/v0.7.4/models/spaceshuttleSVMmodel.zip) and rename it to ‘model.zip.
 1. Install tox: ‘sudo -E pip install --upgrade tox’
 1. Run: ‘tox’
 1. Activate virtualenv with installed dependencies: ‘. .tox/py27/bin/activate’
@@ -66,7 +66,7 @@ To send data to Kafka through a gateway you can either (1) push space_shuttle_cl
 
 1. Login to the space containing space-shuttle-gateway
 1. Go to: ‘client/’
-1. Push the app to Cloud Foundry using: ‘cf push’ 
+1. Push the app to Cloud Foundry using: ‘cf push’
 >Note: In case of name conflict during the push, add the name parameter ‘cf push <custom_name>’
 
 ### Local configuration:
@@ -89,35 +89,47 @@ To determine the URL of the gateway you are going to send data to:
 1. Activate created virtualenv: ‘. .tox/py27/bin/activate’
 1. Run: ‘python space_shuttle_client.py --gateway-url <gateway_url>’
 
-##Creating TAP Analytics Toolkit model
+##Creating Spark-tk model
 To create the model for the Scoring Engine, follow these steps:
 
 #### Upload training data set to HDFS
-1. Login to the TAP console and navigate to  **Data catalog > Submit Transfer**. 
+1. Login to the TAP console and navigate to  **Data catalog > Submit Transfer**.
 1. Select the input type: **Local path**.
-1. Select the sample training data file, which can be found here: src/main/atkmodelgenerator/train-data.csv)
+1. Select the sample training data file, which can be found here: src/main/sparktkmodelgenerator/train-data.csv)
 1. Enter a title in the **Title** field.
 1. Click the **Upload** button.
-When the upload is completed, click the **Data sets** tab and view the details of the uploaded data set by clicking its name. Copy the value of targetUri, which contains the path to the uploaded data set in HDFS; you will need this to create the TAP Analytics Toolkit model in Jupyter notebook.
-
-#### Create Analytics Toolkit instance
-1. In the TAP console, navigate to the **Data Science >TAP Analytics Toolkit** tab.
-1. If there is an instance of TAP Analytics Toolkit already installed, you will see it in an instances list; no further action is needed. If there are *no* instances, you will be asked if you want to create one. Select **Yes**, then wait until the application is created (this can take about a minute or two). The application will appear in the **TAP Analytics Toolkit** instances list after creation.
+When the upload is completed, click the **Data sets** tab and view the details of the uploaded data set by clicking its name. Copy the value of targetUri, which contains the path to the uploaded data set in HDFS; you will need this to create the Spark-tk model in Jupyter notebook.
 
 #### Create Jupyter instance
 1. In the TAP console, navigate to the **Data Science > Jupyter**. Click the **Create a new Jupyter instance** button.
 1. Copy the password for the newly created Jupyter instance (for use in the next step).
 1. Login to Jupyter by clicking the App Url link, using the password you just copied.
+1. In Jupyter, click the (white) **Upload** button, then navigate to the Space Shuttle notebook file, which can be found here: `space-shuttle-demo-master/sparktkmodelgenerator/sparktk_shuttle_model_generator.ipynb`
+1. Select the file and click the second (blue) **Upload** button.
+1. In Jupyter, click on the `sparktk_shuttle_model_generator.ipynb` file to open the file.
 
-#### Install TAP Analytics Toolkit client
-1. Create a new Jupyter notebook (see the steps above).
-1. Install the TAP Analytics Toolkit client in your notebook by executing this command: ‘!pip install <link-to-atk-server>/client’. <link-to-atk-server> can be copied from the URL column in the **TAP Analytics Toolkit** instances list.
+#### Connecting to TAP server and generating the model
+In this step, you modify the generic notebook script, then run it to create the model.
 
-#### Connect to TAP Analytics Toolkit server and run model generation script
-1. Copy the contents from ‘src/main/atkmodelgenerator/atk_model_generator.py’ into your notebook.
-1. After the imports section, set the URI to the TAP Analytics Toolkit server: ‘ta.server.uri = <link-to-atk-server>’
-1. Set the value of ‘ds’ to be the link to the data set previously uploaded to HDFS (‘targetUri’).
-1. Run the script. The link to the created model in HDFS will be printed in the output.
+1. In the TAP Console, navigate to the **Data catalog > Data sets** tab and then click on the name of the data set to show detailed information. Copy the URI for the data set for use in the next step.
+1. In Jupyter, paste this URI over the default name for data set `ds=` in the third cell.  
+```
+    ds=”your_dataset_uri_here”
+```  
+1. In Jupyter, select the second cell, then on the Jupyter menu, select **Cell > Run Cell, Select Below** (same as the ![](https://github.com/trustedanalytics/platform-wiki/blob/master/wikiImages/Jup_Run_Sel_Next_Icon.png) icon) to run the script in the cell.
+1. When execution of the cell is finished, the asterisk in the `In [*]` text on the right side of the cell is replaced by the cell number. Work through Cells 3 through 6,  one at a time, using **Cell > Run, Highlight Next**. Make sure you wait for the current cell to complete before moving to the next one.
+1. When you start Cell 7, you will be prompted for:  
+  - The URL of your TAP server. Paste the domain name of the TAP server into the field and press **Enter**. (Example: `ontap07.demo-gotapaas.com`.)  
+  - Your TAP user name. Type your user name and press **Enter**.  
+  - Your TAP password. Type your password and press **Enter**.  
+1. In the next cell, you are prompted for the organization number, for example **[1-2]**. Enter the organization number and press **Enter**.
+>If there is only one organization, you will *not* be prompted.
+
+1. Work through the remaining cells, one at a time, using **Cell > Run, Highlight Next**. Make sure you wait for the current cell to complete before moving to the next one.
+1. When finished, the trained model will appear in the **Data catalog > Data sets** tab. Filename = `spaceshuttleSVMmodel.mar`.
+>The Model Archive format (.mar files) is a new model format for use with spark-tk.
+
+1. Click on the model name to see detailed information. Copy the targetURI for the model for use in creation of space-shuttle-scoring-engine.
 
 ## Local development
 The application can be run in three different configurations depending on chosen data provider (streaming source).
@@ -136,11 +148,11 @@ The application can be run in three different configurations depending on chosen
 
 >Note: influxdb:0.9 is *not* backwards compatible with 0.8.x.
 
-   
+
 ##### Scoring Engine  
 For instructions on pushing the scoring engine to the platform, go [here[(https://github.com/trustedanalytics/space-shuttle-demo#manual-deployment).  
 
-  
+
 #### Run
 1. Make sure that both local and random profiles are active.
 1. ‘export SE_URL <scoring engine URL>’

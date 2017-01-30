@@ -33,8 +33,8 @@ LOGGER = logging.getLogger(__name__)
 PARSER = cf_helpers.get_parser("space-shuttle-demo")
 PARSER.add_argument('--path_to_model', type=str,
                     help='Path to a model for scoring-engine on local '
-                         'machine, eg. /path/to/model/model.tar, '
-                         'default path is "./model.tar"')
+                         'machine, eg. /path/to/model/model.zip, '
+                         'default path is "./model.zip"')
 PARSER.add_argument('--no_build', action='store_true',
                     help='Do not build project package with Maven')
 ARGS = PARSER.parse_args()
@@ -43,7 +43,7 @@ CF_INFO = cf_helpers.get_info(ARGS)
 cf_cli.login(CF_INFO)
 
 LOGGER.info('Uploading model to HDFS...')
-LOCAL_MODEL_PATH = ARGS.path_to_model if ARGS.path_to_model else 'model.tar'
+LOCAL_MODEL_PATH = ARGS.path_to_model if ARGS.path_to_model else 'model.zip'
 HDFS_MODEL_PATH = cf_helpers.upload_to_hdfs(CF_INFO.api_url, CF_INFO.org,
                                             LOCAL_MODEL_PATH,
                                             'model')
@@ -54,7 +54,7 @@ cf_cli.create_service('zookeeper', 'shared', 'space-shuttle-zookeeper')
 cf_cli.create_service('gateway', 'Simple', 'space-shuttle-gateway')
 
 LOGGER.info('Creating scoring engine...')
-cf_cli.create_service('scoring-engine', 'Simple',
+cf_cli.create_service('scoring-engine-spark-tk', 'Simple',
                       'space-shuttle-scoring-engine',
                       json.dumps({"uri": HDFS_MODEL_PATH}))
 
@@ -72,4 +72,3 @@ CLIENT_DIR = os.path.join(PROJECT_DIR, 'client')
 
 LOGGER.info('Pushing application client to Cloud Foundry...')
 cf_helpers.push(work_dir=CLIENT_DIR)
-
